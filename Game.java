@@ -55,9 +55,37 @@ public class Game implements GameInterface
 
     }
 
+    /**
+    * The main method menu should allow users to:
+    *      set the players (human or computer);
+    *      load a game;
+    *      continue a game;
+    *      save the game;
+    *      start a new game;
+    *      exit the program.
+    * Run with -c for a command line game or -g for a GUI game ??? (look into how GUI is created)
+    */
     public static void main(String[] args)
     {
         System.out.println("Welcome to Tabula Durham.");
+        if(args.length > 0){
+            if(args[0].equals("-c"))
+            {
+                System.out.println("You have elected to start in command line mode.");
+            }
+            else if(args[0].equals("-g"))
+            {
+                System.out.println("You have elected to start in GUI mode.");
+            }
+            else
+            {
+                System.out.println("Your command line parameter was not recognised. Use -c to start in command line mode or -g to start in GUI mode. Defaulting to command line mode.");
+            }
+        }
+        else
+        {
+            System.out.println("You did not specify whether to start in command line or GUI mode. Defaulting to command line mode.");
+        }
         Scanner scanner = new Scanner(System.in);
         String input = "";
         do {
