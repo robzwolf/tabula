@@ -9,8 +9,8 @@ public interface MoveInterface {
 
     /**
      * @param locationNumber represents the board position to move a piece from
-     * in the range 0-24. 0 reresents off the board (the knocked location if there are pieces there, otherwise the off-board star location). A locationNumber of 1-24 refers to locations on the board with 1 being the first and 24 being the last.
-     * @throws NoSuchLocationException if locationNumer is not in the range 0-24
+     * in the range 0-24. 0 represents off the board (the knocked location if there are pieces there, otherwise the off-board start location). A locationNumber of 1-24 refers to locations on the board with 1 being the first and 24 being the last.
+     * @throws NoSuchLocationException if locationNumber is not in the range 0-24
      **/
     void setSourceLocation(int locationNumber) throws NoSuchLocationException;
 
@@ -18,9 +18,9 @@ public interface MoveInterface {
 
     /**
      *
-     * @param diceValue represents the value of the dice to be used in the move 
+     * @param diceValue represents the value of the dice to be used in the move
      *
-     * @throws IllegalMoveException if diceValue is not in the range 0-6 
+     * @throws IllegalMoveException if diceValue is not in the range 0-6
      **/
     void setDiceValue(int diceValue) throws IllegalMoveException;
 

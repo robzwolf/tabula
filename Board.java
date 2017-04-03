@@ -24,7 +24,7 @@ public class Board implements BoardInterface
         "Newcastle-upon-Tyne",
         "Gateshead",
         "Sunderland",
-        "Peterlee"
+        "Peterlee",
         "Hartlepool",
         "Redcar",
         "Saltburn-by-the-Sea",
@@ -58,7 +58,7 @@ public class Board implements BoardInterface
         // Location 26 is the 'knocked' location, off the board
         // Hence locations list should look like:
         //     START (0, OFF), 1 (ON), 2 (ON), ..., NUMBER_OF_LOCATIONS-1 (23, ON), NUMBER_OF_LOCATIONS (24, ON), END (25, OFF), KNOCKED (26, OFF)
-        for(i=0; i<NUMBER_OF_LOCATIONS + 3; i++){
+        for(int i=0; i<NUMBER_OF_LOCATIONS + 3; i++){
 
             // String locName;
             // if(i > locationNames.length){
@@ -91,17 +91,17 @@ public class Board implements BoardInterface
 
     public LocationInterface getStartLocation()
     {
-        return locations[0];
+        return locations.get(0);
     }
 
     public LocationInterface getEndLocation()
     {
-        return locations[NUMBER_OF_LOCATIONS + 1];
+        return locations.get(NUMBER_OF_LOCATIONS + 1);
     }
 
     public LocationInterface getKnockedLocation()
     {
-        return locations[NUMBER_OF_LOCATIONS + 2];
+        return locations.get(NUMBER_OF_LOCATIONS + 2);
     }
 
     public LocationInterface getBoardLocation(int locationNumber) throws NoSuchLocationException
@@ -112,7 +112,53 @@ public class Board implements BoardInterface
         }
         else
         {
-            return locations[locationNumber];
+            return locations.get(locationNumber);
         }
+    }
+
+
+    public boolean canMakeMove(Colour colour, MoveInterface move)
+    {
+        return false;
+    }
+
+    public void makeMove(Colour colour, MoveInterface move) throws IllegalMoveException
+    {
+
+    }
+
+    public void takeTurn(Colour colour, TurnInterface turn, List<Integer> diceValues) throws IllegalTurnException
+    {
+
+    }
+
+    public boolean isWinner(Colour colour)
+    {
+        return false;
+    }
+
+    public Colour winner()
+    {
+        return null;
+    }
+
+    public boolean isValid()
+    {
+        return false;
+    }
+
+    public Set<MoveInterface> possibleMoves(Colour colour, List<Integer> diceValues)
+    {
+        return null;
+    }
+
+    public BoardInterface clone()
+    {
+        return null;
+    }
+
+    public String toString()
+    {
+        return null;
     }
 }

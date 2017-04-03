@@ -7,22 +7,54 @@
 
 public class Move implements MoveInterface
 {
-    private int sourceLocationNumNum;
+    private Location sourceLocation;
+    private int diceValue;
 
     public Move()
     {
-        sourceLocation = -1;
+        sourceLocation = null;
+        diceValue = 0;
     }
 
+    // ???
     public void setSourceLocation(int locationNumber) throws NoSuchLocationException
     {
-        if(locationNumber < 0 || locationNumber > 24)
+        if(locationNumber < 0 || locationNumber > BoardInterface.NUMBER_OF_LOCATIONS)
         {
-            throw new NoSuchLocationException("That is not a valid location. Locations ")
+            throw new NoSuchLocationException("That is not a valid location. Locations must lie in the range 0 to " + BoardInterface.NUMBER_OF_LOCATIONS);
         }
-        sourceLocationNum = locationNumber;
+        else
+        {
+            //sourceLocation = ;
+        }
+
     }
 
+    // ??? why int?
+    public int getSourceLocation()
+    {
+        //return sourceLocation;
+        return -1;
+    }
+
+    // ??? why 0-6 and not 1-6?
+    public void setDiceValue(int diceValue) throws IllegalMoveException
+    {
+        if(0 <= diceValue && diceValue <= 6)
+        {
+            this.diceValue = diceValue;
+        }
+        else
+        {
+            // ???
+            throw new IllegalMoveException("Dice value must be in the range 0-6");
+        }
+    }
+
+    public int getDiceValue()
+    {
+        return diceValue;
+    }
 
 
 

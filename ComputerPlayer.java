@@ -10,5 +10,8 @@ import java.util.List;
 
 public class ComputerPlayer implements PlayerInterface
 {
-
+    public TurnInterface getTurn(Colour colour, BoardInterface board, List<Integer> diceValues) throws PauseException
+    {
+        return null;
+    }
 }
