@@ -20,6 +20,25 @@ public class Location implements LocationInterface
 
     public Location(String name)
     {
+        setName(name);
+        setMixed(false);
+        pieces = new HashMap<Colour,Integer>();
+
+        // Populate the pieces HashMap
+        // getEnumConsants() usage taken from https://www.tutorialspoint.com/java/lang/class_getenumconstants.htm, retrieved 03/04/2017
+        for(Colour colour : Colour.class.getEnumConstants())
+        {
+            pieces.put(colour,0);
+        }
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
         if(name == null)
         {
             this.name = "";
@@ -27,15 +46,6 @@ public class Location implements LocationInterface
         else
         {
             this.name = name;
-        }
-
-        mixed = false;
-        pieces = new HashMap<Colour,Integer>();
-
-        // Populate the pieces HashMap
-        for(Colour colour : Colour.getEnumConstants())
-        {
-            pieces.put(colour,0);
         }
     }
 
@@ -91,6 +101,45 @@ public class Location implements LocationInterface
         }
 
         // If the space has one counter of the opposite colour
-        if(!this.isMixed()) && pieces.get(colour) == 0)
+        if(!this.isMixed())
+        {
+            boolean onlyThisColour = true;
+            // If any other colours have a non-zero number of pieces on this location
+            for(Colour c : pieces.keySet())
+            {
+                if(pieces.get(c) != 0 & c != colour)
+                {
+                    onlyThisColour = false;
+                }
+            }
+            if(onlyThisColour){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Colour addPieceGetKnocked(Colour colour) throws IllegalMoveException
+    {
+        return null;
+    }
+
+    public boolean canRemovePiece(Colour colour)
+    {
+        return false;
+    }
+
+    public void removePiece(Colour colour) throws IllegalMoveException
+    {
+        if(pieces.get(colour) == 0)
+        {
+            throw new IllegalMoveException("No pieces of that colour are on that location.");
+        }
+    }
+
+    public boolean isValid()
+    {
+        return false;
     }
 }

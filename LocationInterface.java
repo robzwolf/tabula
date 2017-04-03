@@ -14,7 +14,7 @@ public interface LocationInterface {
 
     String getName();
     void setName(String name);
-    
+
     /**
      * @return true if and only if the location allows pieces of both colours
      */
@@ -42,11 +42,11 @@ public interface LocationInterface {
      **/
     boolean canAddPiece(Colour colour);
 
-    
+
     /**
      * @param colour the colour of the piece to add
      *
-     * @throws IllegalMoveException if the location is not mixed and already contains two or more pieces 
+     * @throws IllegalMoveException if the location is not mixed and already contains two or more pieces
      * of the other colour
      *
      * @return null if nothing has been knocked off, otherwise the colour of the piece that has been knocked off
@@ -58,7 +58,7 @@ public interface LocationInterface {
      * @return true if and only if a piece of that colour can be removed (i.e. no IllegalMoveException)
      **/
     boolean canRemovePiece(Colour colour);
-    
+
     /**
      * @param colour the colour of the piece to remove
      *
@@ -68,7 +68,8 @@ public interface LocationInterface {
     void removePiece(Colour colour) throws IllegalMoveException;
 
     /**
-     * @return true if and only if the Location is in a valid state depending on the number of each colour and whether or not it is a mixed location
+     * @return true if and only if the Location is in a valid state depending on
+     * the number of each colour and whether or not it is a mixed location
      */
     boolean isValid();
 }
