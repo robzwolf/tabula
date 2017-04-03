@@ -1,12 +1,12 @@
 import java.util.*;
 
 /**
- * Dice represents a pair of dice as used in tabula.
- *
- * It should use the Die class so that all randomness comes from there
- *
- * Requires a constructor with no parameters. Initially the dice have no value until they are rolled
- **/
+* Dice represents a pair of dice as used in tabula.
+*
+* It should use the Die class so that all randomness comes from there
+*
+* Requires a constructor with no parameters. Initially the dice have no value until they are rolled
+**/
 
 public class Dice implements DiceInterface
 {
