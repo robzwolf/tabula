@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Game represents the game state including the board, the dice and the players
@@ -52,5 +53,16 @@ public class Game implements GameInterface
     public void loadGame(String filename) throws IOException
     {
 
+    }
+
+    public static void main(String[] args)
+    {
+        System.out.println("Welcome to Tabula Durham.");
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
+        do {
+            System.out.println("Press E to exit.");
+            input = scanner.nextLine();
+        } while (!input.toLowerCase().equals("e"));
     }
 }
