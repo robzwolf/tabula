@@ -8,12 +8,12 @@
 public class Move implements MoveInterface
 {
     private Location sourceLocation;
-    private int diceValue;
+    private int dieValue;
 
     public Move()
     {
         sourceLocation = null;
-        diceValue = 0;
+        dieValue = 0;
     }
 
     // ???
@@ -37,12 +37,13 @@ public class Move implements MoveInterface
         return -1;
     }
 
-    // ??? why 0-6 and not 1-6?
+    // interface is wrong (says range 0-6, should be range 1-6) - see https://duo.dur.ac.uk/bbcswebdav/pid-3988457-dt-content-rid-16369722_2/courses/COMP1011_2016/Tabula%20FAQs%281%29.pdf, retrieved 03/04/2017
+    // name setDiceValue should really be name setDieValue
     public void setDiceValue(int diceValue) throws IllegalMoveException
     {
-        if(0 <= diceValue && diceValue <= 6)
+        if(1 <= diceValue && diceValue <= 6)
         {
-            this.diceValue = diceValue;
+            this.dieValue = diceValue;
         }
         else
         {
@@ -51,9 +52,10 @@ public class Move implements MoveInterface
         }
     }
 
+    // name getDiceValue should really be name getDieValue
     public int getDiceValue()
     {
-        return diceValue;
+        return dieValue;
     }
 
 
