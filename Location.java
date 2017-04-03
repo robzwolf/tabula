@@ -39,14 +39,7 @@ public class Location implements LocationInterface
 
     public void setName(String name)
     {
-        if(name == null)
-        {
-            this.name = "";
-        }
-        else
-        {
-            this.name = name;
-        }
+        this.name = name == null ? "" : name;
     }
 
     public boolean isMixed()
@@ -79,6 +72,7 @@ public class Location implements LocationInterface
 
     public boolean canAddPiece(Colour colour)
     {
+        // From http://community.dur.ac.uk/s.p.bradley/teaching/IP/lecture_tabula/, retrieved 03/04/2017
         /* A piece can be added if:
            - The space is empty
            - The space has counters of the same colour
