@@ -2,21 +2,21 @@ public enum Colour{
     GREEN, BLUE;
 
     /**
-     *
-     * @return the other colour from this colour
-     *
-     **/
+    *
+    * @return the other colour from this colour
+    *
+    **/
     public Colour otherColour(){
-	switch(this){
-	case GREEN:
-	    return BLUE;
+        switch(this){
+            case GREEN:
+                return BLUE;
 
-	case BLUE:
-	    return GREEN;
+            case BLUE:
+                return GREEN;
 
-	default:
-	    // will not happen
-	    return null;
-	}
+            default:
+                // will not happen
+                return null;
+        }
     }
 }

@@ -32,6 +32,34 @@ public class Dice implements DiceInterface
 
     public List<Integer> getValues() throws NotRolledYetException
     {
+        List<Integer> values = new ArrayList<Integer>();
+        if(d1.getValue() == d2.getValue()) // Rolled a double
+        {
+            // The same value four times
+            values.add(d1.getValue());
+            values.add(d1.getValue());
+            values.add(d1.getValue());
+            values.add(d1.getValue());
+        }
+        else
+        {
+            values.add(d1.getValue());
+            values.add(d2.getValue());
+        }
+        return values;
+    }
 
+    public void clear()
+    {
+        d1.clear();
+        d2.clear();
+    }
+
+    public List<DieInterface> getDice()
+    {
+        List<DieInterface> dice = new ArrayList<DieInterface>();
+        dice.add(d1);
+        dice.add(d2);
+        return dice;
     }
 }

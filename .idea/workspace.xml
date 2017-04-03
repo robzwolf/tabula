@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="422698c5-21ec-49dc-994f-b84ce65c80d6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NotRolledYetException.java" afterPath="$PROJECT_DIR$/NotRolledYetException.java" />
-    </list>
+    <list default="true" id="422698c5-21ec-49dc-994f-b84ce65c80d6" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -607,6 +605,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="422698c5-21ec-49dc-994f-b84ce65c80d6" name="Default" comment="" />
@@ -614,12 +615,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1491240686972</updated>
-      <workItem from="1491240690171" duration="2399000" />
+      <workItem from="1491240690171" duration="2555000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2399000" />
+    <option name="totallyTimeSpent" value="2555000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
