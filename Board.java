@@ -8,14 +8,16 @@ import java.util.Set;
  *
  **/
 
-public class Board //implements BoardInterface
+public class Board implements BoardInterface
 {
     private String name;
 
     // List of all the locations in game
     // Location 0 ("Newcastle-upon-Tyne") is the start location, off the board
-    // Location 24 ("Durham") is the last location
-    // Location 25 ("Stockton-on-Tees") is the 'knocked' location
+    // Location 25 ("Durham") is the end location, off the board
+    // Location 26 ("Stockton-on-Tees") is the 'knocked' location
+    // Hence locations list should look like:
+    //     START (0, OFF), 1 (ON), 2 (ON), ..., NUMBER_OF_LOCATIONS-1 (23, ON), NUMBER_OF_LOCATIONS (24, ON), END (25, OFF), KNOCKED (26, OFF)
     private List<LocationInterface> locations;
 
     private static final String[] locationNames = {
@@ -41,6 +43,7 @@ public class Board //implements BoardInterface
         "Hexham",
         "Consett",
         "Bishop Auckland",
+        "Shildon",
         "Newton Aycliffe",
         "Spennymoor",
         "Durham",
@@ -51,15 +54,30 @@ public class Board //implements BoardInterface
     {
         // Create the list of Locations
         // Location 0 is start location, off the board
-        // Location 24 is last location on the board
-        // Location 25 is the 'knocked' location
-        for(i=0; i<25; i++){
-            Location l = new Location(locationNames[i]);
-            if(i == 0 || i == 25) // if start (off) or 'knocked' location, make location mixed
+        // Location 25 is end location, off the board
+        // Location 26 is the 'knocked' location, off the board
+        // Hence locations list should look like:
+        //     START (0, OFF), 1 (ON), 2 (ON), ..., NUMBER_OF_LOCATIONS-1 (23, ON), NUMBER_OF_LOCATIONS (24, ON), END (25, OFF), KNOCKED (26, OFF)
+        for(i=0; i<NUMBER_OF_LOCATIONS + 3; i++){
+
+            // String locName;
+            // if(i > locationNames.length){
+            //     locName = "Town " + i;
+            // }
+            // else
+            // {
+            //     locName = locationsNames[i];
+            // }
+
+            Location l = new Location(i>locationNames.length ? "Town "+i : locationNames[i]);
+
+            if(i == 0 || i == 25 || i == 26) // if start, end or 'knocked' location (all off the baord), make location mixed
             {
                 l.setMixed(true);
             }
+
             locations.add(l);
+
         }
 
         // Set the board name
@@ -69,5 +87,32 @@ public class Board //implements BoardInterface
     public void setName(String name)
     {
         this.name = name == null ? "" : name;
+    }
+
+    public LocationInterface getStartLocation()
+    {
+        return locations[0];
+    }
+
+    public LocationInterface getEndLocation()
+    {
+        return locations[NUMBER_OF_LOCATIONS + 1];
+    }
+
+    public LocationInterface getKnockedLocation()
+    {
+        return locations[NUMBER_OF_LOCATIONS + 2];
+    }
+
+    public LocationInterface getBoardLocation(int locationNumber) throws NoSuchLocationException
+    {
+        if(locationNumber < 1 || locationNumber > 24)
+        {
+            throw new NoSuchLocationException("Requested location number was out of the given range (1 to " + NUMBER_OF_LOCATIONS + ").");
+        }
+        else
+        {
+            return locations[locationNumber];
+        }
     }
 }
