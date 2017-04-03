@@ -9,7 +9,7 @@ import java.util.Random;
  *
  * A single static java.util.Random object should be the source of all randomisation.
  *
- **/
+**/
 
 public class Die implements DieInterface
 {

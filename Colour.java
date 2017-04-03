@@ -2,9 +2,9 @@ public enum Colour{
     GREEN, BLUE;
 
     /**
-    *
-    * @return the other colour from this colour
-    *
+     *
+     * @return the other colour from this colour
+     *
     **/
     public Colour otherColour(){
         switch(this){
