@@ -1,0 +1,7 @@
+# This is the .gitignore file
+
+# Compiled class file
+*.class
+
+# IntelliJ settings
+.idea/
