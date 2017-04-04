@@ -14,17 +14,17 @@ import java.util.Random;
 public class Die implements DieInterface
 {
     private static Random randomiser;
-    private int value; // 0 if unrolled
+    private Integer value; // null if unrolled
 
     public Die()
     {
-        value = 0;
+        value = null;
         randomiser = new Random();
     }
 
     public boolean hasRolled()
     {
-        return value == 0;
+        return value == null;
     }
 
     public void roll()
@@ -46,19 +46,19 @@ public class Die implements DieInterface
 
     public void setValue(int value)
     {
-        if(0 <= value && value <= NUMBER_OF_SIDES_ON_DIE)
+        if(1 <= value && value <= NUMBER_OF_SIDES_ON_DIE)
         {
             this.value = value;
         }
         else
         {
-            this.value = 0;
+            this.value = null;
         }
     }
 
     public void clear()
     {
-        value = 0;
+        value = null;
     }
 
     public void setSeed(long seed)
