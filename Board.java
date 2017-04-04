@@ -161,4 +161,21 @@ public class Board implements BoardInterface
     {
         return null;
     }
+
+    /**
+     * @param colour The colour we know, find the other one
+     * @return The other colour in the game (assuming there are only two colours), null if something went wrong
+     */
+    public static Colour getOtherColour(Colour colour)
+    {
+        // getEnumConsants() usage taken from https://www.tutorialspoint.com/java/lang/class_getenumconstants.htm, retrieved 03/04/2017
+        for(Colour c : Colour.class.getEnumConstants())
+        {
+            if(c != colour)
+            {
+                return c;
+            }
+        }
+        return null;
+    }
 }

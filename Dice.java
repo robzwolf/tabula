@@ -29,7 +29,7 @@ public class Dice implements DiceInterface
         d1.roll();
         d2.roll();
     }
-
+    
     public List<Integer> getValues() throws NotRolledYetException
     {
         List<Integer> values = new ArrayList<Integer>();

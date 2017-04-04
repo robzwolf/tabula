@@ -62,7 +62,7 @@ public interface LocationInterface {
     /**
      * @param colour the colour of the piece to remove
      *
-     * @throws IllegalMoveException if there are no pieces of that colout int the location
+     * @throws IllegalMoveException if there are no pieces of that colour in the location
      *
      **/
     void removePiece(Colour colour) throws IllegalMoveException;

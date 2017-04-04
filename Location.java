@@ -39,7 +39,7 @@ public class Location implements LocationInterface
 
     public void setName(String name)
     {
-        this.name = name == null ? "" : name;
+        this.name = (name != null) ? name : "";
     }
 
     public boolean isMixed()
@@ -74,12 +74,13 @@ public class Location implements LocationInterface
     {
         // From http://community.dur.ac.uk/s.p.bradley/teaching/IP/lecture_tabula/, retrieved 03/04/2017
         /* A piece can be added if:
-        - The space is empty
-        - The space has counters of the same colour
-        - The space has one counter of the opposite colour
-        - If a counter moves to a space with one counter of the
-        opposite colour, the opposite colour, the opposition
-        counter is knocked off and is placed in a holding area
+           - The space is empty
+           - The space has counters of the same colour
+           - The space has one counter of the opposite colour
+
+           If a counter moves to a space with one counter of the opposite
+           colour, the opposition counter is knocked off and is placed in a
+           holding area
         */
 
         // If the space is empty
@@ -89,51 +90,106 @@ public class Location implements LocationInterface
         }
 
         // If the space has counters of the same colour
-        if(!this.isMixed() && pieces.get(colour) != 0)
+        if(!this.isMixed() && numberOfPieces(colour) != 0)
         {
             return true;
         }
 
-        // If the space has one counter of the opposite colour
+        // If the space is not mixed and has exactly one counter of the opposite colour
         if(!this.isMixed())
         {
-            boolean onlyThisColour = true;
-            // If any other colours have a non-zero number of pieces on this location
-            for(Colour c : pieces.keySet())
+            if(numberOfPieces(Board.getOtherColour(colour)) == 1)
             {
-                if(pieces.get(c) != 0 & c != colour)
-                {
-                    onlyThisColour = false;
-                }
-            }
-            if(onlyThisColour){
                 return true;
             }
+
+            // boolean onlyThisColour = true;
+            // // If any other colours have a non-zero number of pieces on this location
+            // for(Colour c : pieces.keySet())
+            // {
+            //     if(numberOfPieces(c) != 0 & c != colour)
+            //     {
+            //         onlyThisColour = false;
+            //     }
+            // }
+            // if(onlyThisColour){
+            //     return true;
+            // }
         }
 
+        // If none of the above conditions are satisfied
         return false;
     }
 
     public Colour addPieceGetKnocked(Colour colour) throws IllegalMoveException
     {
+        // Do we need to knock a piece?
+
+        Colour otherColour = Board.getOtherColour(colour);
+        if(numberOfPieces(otherColour) == 0) // Simply add the piece
+        {
+            pieces.put(colour,numberOfPieces(colour)+1);
+        }
+        else if(numberOfPieces(otherColour) == 1) // There is one piece of the other colour, so knock it
+        {
+            return otherColour;
+        }
+        else
+        {
+            throw new IllegalMoveException("Too many pieces of other colour in this location to knock.");
+        }
         return null;
     }
 
     public boolean canRemovePiece(Colour colour)
     {
-        return false;
+        // Can remove a piece if there are >0 pieces in this Location
+        if(numberOfPieces(colour) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void removePiece(Colour colour) throws IllegalMoveException
     {
-        if(pieces.get(colour) == 0)
+        if(canRemovePiece(colour))
         {
-            throw new IllegalMoveException("No pieces of that colour are on that location.");
+            pieces.put(colour,numberOfPieces(colour)-1);
+        }
+        else
+        {
+            throw new IllegalMoveException("No pieces of that colour (" + colour + ") are in that location.");
         }
     }
 
     public boolean isValid()
     {
-        return false;
+        // invalid if not mixed AND >0 of EACH colour
+        boolean moreThanOneColour = false;
+        Colour firstColourWithSomePieces = null;
+        for(Colour c : pieces.keySet())
+        {
+            if(numberOfPieces(c) > 0)
+            {
+                if(firstColourWithSomePieces instanceof Colour)
+                {
+                    moreThanOneColour = true;
+                }
+                else
+                {
+                    firstColourWithSomePieces = c;
+                }
+            }
+            else if(numberOfPieces(c) < 0) // No negative values allowed
+            {
+                return false;
+            }
+        }
+        return !isMixed() && !moreThanOneColour;
     }
+
 }
