@@ -71,7 +71,7 @@ public class Board implements BoardInterface
 
             Location l = new Location(i>locationNames.length ? "Town "+i : locationNames[i]);
 
-            if(i == 0 || i == 25 || i == 26) // if start, end or 'knocked' location (all off the baord), make location mixed
+            if(i == 0 || i == 25 || i == 26) // if start, end or 'knocked' location (all off the board), make location mixed
             {
                 l.setMixed(true);
             }
@@ -86,7 +86,7 @@ public class Board implements BoardInterface
 
     public void setName(String name)
     {
-        this.name = name == null ? "" : name;
+        this.name = (name != null) ? name : "";
     }
 
     public LocationInterface getStartLocation()
