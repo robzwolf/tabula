@@ -19,12 +19,15 @@ public class Die implements DieInterface
     public Die()
     {
         value = null;
-        randomiser = new Random();
+        // Only bother initialising randomiser if it's not already been initialised!
+        if(!(randomiser instanceof Random)){
+            randomiser = new Random();
+        }
     }
 
     public boolean hasRolled()
     {
-        return value == null;
+        return value != null;
     }
 
     public void roll()

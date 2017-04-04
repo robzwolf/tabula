@@ -9,14 +9,14 @@ public enum Colour{
     public Colour otherColour(){
         switch(this){
             case GREEN:
-            return BLUE;
+                return BLUE;
 
             case BLUE:
-            return GREEN;
+                return GREEN;
 
             default:
-            // will not happen
-            return null;
+                // will not happen
+                return null;
         }
     }
 }
