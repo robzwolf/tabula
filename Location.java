@@ -98,7 +98,7 @@ public class Location implements LocationInterface
         // If the space is not mixed and has exactly one counter of the opposite colour
         if(!this.isMixed())
         {
-            if(numberOfPieces(Board.getOtherColour(colour)) == 1)
+            if(numberOfPieces(colour.otherColour()/*Board.getOtherColour(colour)*/) == 1)
             {
                 return true;
             }
@@ -125,7 +125,7 @@ public class Location implements LocationInterface
     {
         // Do we need to knock a piece?
 
-        Colour otherColour = Board.getOtherColour(colour);
+        Colour otherColour = colour.otherColour();//Board.getOtherColour(colour);
         if(numberOfPieces(otherColour) == 0) // Simply add the piece
         {
             pieces.put(colour,numberOfPieces(colour)+1);

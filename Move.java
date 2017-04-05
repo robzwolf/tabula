@@ -7,7 +7,7 @@
 
 public class Move implements MoveInterface
 {
-    private int sourceLocation;
+    private Integer sourceLocation;
     private int dieValue;
 
     public Move()

@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.HashMap;
 
 /**
  * Game represents the game state including the board, the dice and the players
@@ -21,28 +22,32 @@ import java.util.Scanner;
 public class Game implements GameInterface
 {
 
-    private PlayerInterface currentPlayer;
+    private HashMap<Colour, PlayerInterface> players;
     private Colour currentColour;
 
     public Game()
     {
-
+        this.players = new HashMap<Colour, PlayerInterface>();
     }
 
     public void setPlayer(Colour colour, PlayerInterface player)
     {
-        this.currentColour = colour;
-        this.currentPlayer = player;
+        players.put(colour, player);
     }
 
     public Colour getCurrentPlayer()
     {
-        return null;
+        return currentColour;
     }
 
     public Colour play() throws PlayerNotDefinedException
     {
-        return null;
+        if(getCurrentPlayer() == null){
+            throw new PlayerNotDefinedException("No player has been defined!");
+        }
+
+
+        return null; // Should return the colour of the winner if there is one, or null if not (the game has been paused by a player)
     }
 
     public void saveGame(String filename) throws IOException
@@ -67,7 +72,7 @@ public class Game implements GameInterface
     */
     public static void main(String[] args)
     {
-        System.out.println("Welcome to Tabula Durham.");
+        System.out.println("Welcome to Tabula North-East.");
         if(args.length > 0){
             if(args[0].equals("-c"))
             {
@@ -88,6 +93,10 @@ public class Game implements GameInterface
         }
         Scanner scanner = new Scanner(System.in);
         String input = "";
+
+        Board b = new Board();
+        System.out.println(b);
+
         do {
             System.out.println("Press E to exit.");
             input = scanner.nextLine();
