@@ -377,6 +377,7 @@ public class Board implements BoardInterface
 
                         break;
 
+
                     } // case 0 ascending
 
                     case 1: // Right only
