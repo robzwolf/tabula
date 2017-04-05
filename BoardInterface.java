@@ -11,18 +11,18 @@ public interface BoardInterface extends Cloneable{
 
     /**
      * note that you should not redefine this constant in the implementing class
-     * but you can (and should) use it in the implementing class. 
+     * but you can (and should) use it in the implementing class.
      */
     static final int PIECES_PER_PLAYER = 15;
 
     /**
      * note that you should not redefine this constant in the implementing class
-     * but you can (and should) use it in the implementing class. 
+     * but you can (and should) use it in the implementing class.
      */
     static final int NUMBER_OF_LOCATIONS = 24;
 
     public void setName(String name);
-    
+
     /**
      * @return the Location off the board where all pieces start the game. This will be a mixed location.
      **/
@@ -76,7 +76,7 @@ public interface BoardInterface extends Cloneable{
      *
      * @param diceValues the values of the dice available in no particular order. There will be repeated values in the list if a double is thrown
      *
-     * @throws IllegalTurnException if and only if the turns in the move are not legal for the diceValues give. Each of the moves has to be legal, and the diceValues in the moves of the turn must match the diceValues parameter. The number of moves in the turn must be no less than the maximum possible number of legal moves: all available dice must be used. If IllegalTurnException is thrown then the board state remains unchanged.
+     * @throws IllegalTurnException if and only if the turns in the move are not legal for the diceValues given. Each of the moves has to be legal, and the diceValues in the moves of the turn must match the diceValues parameter. The number of moves in the turn must be no less than the maximum possible number of legal moves: all available dice must be used. If IllegalTurnException is thrown then the board state remains unchanged.
      **/
     void takeTurn(Colour colour, TurnInterface turn, List<Integer> diceValues) throws IllegalTurnException;
 

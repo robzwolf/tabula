@@ -58,16 +58,7 @@ public class Board implements BoardInterface
         // Location 26 is the 'knocked' location, off the board
         // Hence locations list should look like:
         //     START (0, OFF), 1 (ON), 2 (ON), ..., NUMBER_OF_LOCATIONS-1 (23, ON), NUMBER_OF_LOCATIONS (24, ON), END (25, OFF), KNOCKED (26, OFF)
-        for(int i=0; i<NUMBER_OF_LOCATIONS + 3; i++){
-
-            // String locName;
-            // if(i > locationNames.length){
-            //     locName = "Town " + i;
-            // }
-            // else
-            // {
-            //     locName = locationsNames[i];
-            // }
+        for(int i=0; i<NUMBER_OF_LOCATIONS+3; i++){
 
             Location l = new Location(i>locationNames.length ? "Town "+i : locationNames[i]);
 
@@ -124,12 +115,46 @@ public class Board implements BoardInterface
 
     public void makeMove(Colour colour, MoveInterface move) throws IllegalMoveException
     {
-
+        if(canMakeMove(colour, move))
+        {
+            Location sourceLocation = locations[move.getSourceLocation()];
+            if(sourceLocation.canRemovePiece(colour)){
+                try
+                {
+                    sourceLocation.removePiece(colour);
+                }
+                catch(IllegalMoveException e)
+                {
+                    throw new IllegalMoveException("Cannot remove a " + colour + " piece from location " + sourceLocation.getName());
+                }
+            }
+            else
+            {
+                throw new IllegalMoveException("Cannot remove a " + colour + " piece from location " + sourceLocation.getName());
+            }
+        }
+        else
+        {
+            // try-catch on moveThing() instead?
+            //throw IllegalMoveException
+        }
     }
 
     public void takeTurn(Colour colour, TurnInterface turn, List<Integer> diceValues) throws IllegalTurnException
     {
-
+        int index = 0;
+        for(Move move : turn.getMoves())
+        {
+            if(move.getDiceValue() != diceValues.get(index))
+            {
+                throw new IllegalTurnException("Die value (" + move.getDiceValue() + ") of move #" + (index+1) + " does not match the given dice value (" + diceValues.get(index) + ")");
+            }
+            else
+            {
+                
+            }
+            index++;
+        }
     }
 
     public boolean isWinner(Colour colour)

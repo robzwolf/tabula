@@ -7,7 +7,7 @@
 
 public class Move implements MoveInterface
 {
-    private Location sourceLocation;
+    private int sourceLocation;
     private int dieValue;
 
     public Move()
@@ -16,7 +16,6 @@ public class Move implements MoveInterface
         dieValue = 0;
     }
 
-    // ???
     public void setSourceLocation(int locationNumber) throws NoSuchLocationException
     {
         if(locationNumber < 0 || locationNumber > BoardInterface.NUMBER_OF_LOCATIONS)
@@ -25,30 +24,27 @@ public class Move implements MoveInterface
         }
         else
         {
-            //sourceLocation = ;
+            sourceLocation = locationNumber;
         }
 
     }
 
-    // ??? why int?
     public int getSourceLocation()
     {
-        //return sourceLocation;
-        return -1;
+        return sourceLocation;
     }
 
     // interface is wrong (says range 0-6, should be range 1-6) - see https://duo.dur.ac.uk/bbcswebdav/pid-3988457-dt-content-rid-16369722_2/courses/COMP1011_2016/Tabula%20FAQs%281%29.pdf, retrieved 03/04/2017
     // name setDiceValue should really be name setDieValue
     public void setDiceValue(int diceValue) throws IllegalMoveException
     {
-        if(1 <= diceValue && diceValue <= 6)
+        if(1 <= diceValue && diceValue <= DieInterface.NUMBER_OF_SIDES_ON_DIE)
         {
             this.dieValue = diceValue;
         }
         else
         {
-            // ???
-            throw new IllegalMoveException("Dice value must be in the range 0-6");
+            throw new IllegalMoveException("Dice value must be in the range 1-" + DieInterface.NUMBER_OF_SIDES_ON_DIE);
         }
     }
 
@@ -57,7 +53,5 @@ public class Move implements MoveInterface
     {
         return dieValue;
     }
-
-
 
 }
