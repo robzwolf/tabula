@@ -227,8 +227,7 @@ public class Board implements BoardInterface
             cl.setMixed(tl.isMixed());
 
             // Transfer number of pieces of each colour
-            // getEnumConsants() usage taken from https://www.tutorialspoint.com/java/lang/class_getenumconstants.htm, retrieved 03/04/2017
-            for(Colour c : Colour.class.getEnumConstants())
+            for(Colour c : Colour.values())
             {
                 // Add the piece c the correct number of times
                 for(int j=1; j<=tl.numberOfPieces(c); j++)
@@ -294,30 +293,10 @@ public class Board implements BoardInterface
 
                 switch((h-1)%4)
                 {
-                    case 0: // Ascending
+                    case 0: // case 0 Ascending
                     {
                         int offset = (int) (1 + (HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW + 1) * 2 * (0.25 * h - 0.25)) - 1; // Generates 1, 13, 25, ...
                         System.out.println("offset: " + offset);
-                        // int offset = -1;
-                        // int offset = (h-1) * 2 * (HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW+1) - 1;
-                        // System.out.println("offset: " + offset);
-
-                        // Generate entire dashed line
-                        // String dashLine = "";
-                        // for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-                        // {
-                        //     dashLine += " ";
-                        //     for(int j=2; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-1; j++)
-                        //     {
-                        //         dashLine += "-";
-                        //     }
-                        //     dashLine += " ";
-                        //     if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){ // i.e. not the last item on the row
-                        //         dashLine += " "; // a single space
-                        //     }
-                        // }
-                        // dashLine += " ";
-                        // dashLine = generateLineOfDashes();
                         lines.add(dashLine);
                         // System.out.println(dashLine);
 
@@ -340,7 +319,7 @@ public class Board implements BoardInterface
 
 
                         // Loop through each colour and print the right number of them
-                        for(Colour c : Colour.class.getEnumConstants())
+                        for(Colour c : Colour.values())
                         {
                             String colourLine = "";
                             for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
@@ -367,28 +346,21 @@ public class Board implements BoardInterface
 
                         // Draw a blank line
                         lines.add("");
-                        // System.out.println("");
-                        // String spacerLine = "";
-                        // for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW*(HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX+1)-1; i++)
-                        // {
-                        //     spacerLine += " ";
-                        // }
-                        // lines.add(spacerLine);
 
                         break;
 
 
                     } // case 0 ascending
 
-                    case 1: // Right only
+                    case 1: // case 1 Right only
                     {
 
                         int offset = (int) ((HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW+1) * (h / 2.0) - 1); // Generates 6, 18, 30, ...
                         System.out.println("offset: " + offset);
 
                         // Draw the dashed line
-                        // String dashLine = generateLineOfDashes();
                         lines.add(dashLine);
+
 
                         // Draw location name line
                         String locationNameLine = "";
@@ -403,6 +375,37 @@ public class Board implements BoardInterface
                         locationNameLine += "|" + this.locations.get(offset+1).getName() + "|";
                         lines.add(locationNameLine);
                         // System.out.println(locationNameLine);
+
+
+                        // Loop through each colour and print the right number of them
+                        for(Colour c : Colour.values())
+                        {
+                            String colourLine = "";
+                            for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
+                            {
+                                colourLine += "|";
+                                colourLine += this.locations.get(offset+i).numberOfPieces(c);
+                                colourLine += " ";
+                                colourLine += c;
+                                for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
+                                    colourLine += " ";
+                                }
+                                colourLine += "|";
+                                if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
+                                    colourLine += " ";
+                                }
+                            }
+                            lines.add(colourLine);
+                            // System.out.println(colourLine);
+                        }
+
+                        // Re-add the full line of dashes
+                        lines.add(dashLine);
+                        // System.out.println(dashLine);
+
+                        // Draw a blank line
+                        lines.add("");
+
 
                         break;
 
@@ -424,44 +427,4 @@ public class Board implements BoardInterface
         }
 
     }
-
-    // private String generateLineOfDashes()
-    // {
-    //     // Generate entire dashed line
-    //     String dashLine = "";
-    //     for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-    //     {
-    //         dashLine += " ";
-    //         for(int j=2; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-1; j++)
-    //         {
-    //             dashLine += "-";
-    //         }
-    //         dashLine += " ";
-    //         if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){ // i.e. not the last item on the row
-    //             dashLine += " "; // a single space
-    //         }
-    //     }
-    //     dashLine += " ";
-    //     return dashLine;
-    // }
-
-
-    // Deprecated in favour of Colour.something.otherColour()
-    // e.g. Colour.GREEN.otherColour()
-    /**
-     * @param colour The colour we know, find the other one
-     * @return The other colour in the game (assuming there are only two colours), null if something went wrong
-     */
-    // public static Colour getOtherColour(Colour colour)
-    // {
-    //     // getEnumConsants() usage taken from https://www.tutorialspoint.com/java/lang/class_getenumconstants.htm, retrieved 03/04/2017
-    //     for(Colour c : Colour.class.getEnumConstants())
-    //     {
-    //         if(c != colour)
-    //         {
-    //             return c;
-    //         }
-    //     }
-    //     return null;
-    // }
 }

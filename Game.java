@@ -73,6 +73,8 @@ public class Game implements GameInterface
     public static void main(String[] args)
     {
         System.out.println("Welcome to Tabula North-East.");
+        System.out.print("[");
+
         if(args.length > 0){
             if(args[0].equals("-c"))
             {

@@ -25,8 +25,7 @@ public class Location implements LocationInterface
         pieces = new HashMap<Colour,Integer>();
 
         // Populate the pieces HashMap
-        // getEnumConsants() usage taken from https://www.tutorialspoint.com/java/lang/class_getenumconstants.htm, retrieved 03/04/2017
-        for(Colour colour : Colour.class.getEnumConstants())
+        for(Colour colour : Colour.values())
         {
             pieces.put(colour,0);
         }
@@ -72,7 +71,6 @@ public class Location implements LocationInterface
 
     public boolean canAddPiece(Colour colour)
     {
-        // From http://community.dur.ac.uk/s.p.bradley/teaching/IP/lecture_tabula/, retrieved 03/04/2017
         /* A piece can be added if:
            - The space is empty
            - The space has counters of the same colour
