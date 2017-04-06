@@ -73,15 +73,18 @@ public class Game implements GameInterface
     public static void main(String[] args)
     {
         System.out.println("Welcome to Tabula North-East.");
-        System.out.print("[");
+
+        String mode = "";
 
         if(args.length > 0){
             if(args[0].equals("-c"))
             {
+                mode = "c";
                 System.out.println("You have elected to start in command line mode.");
             }
             else if(args[0].equals("-g"))
             {
+                mode = "g";
                 System.out.println("You have elected to start in GUI mode.");
             }
             else
@@ -91,6 +94,7 @@ public class Game implements GameInterface
         }
         else
         {
+            mode = "c";
             System.out.println("You did not specify whether to start in command line or GUI mode. Defaulting to command line mode.");
         }
         Scanner scanner = new Scanner(System.in);

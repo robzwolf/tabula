@@ -425,6 +425,64 @@ public class Board implements BoardInterface
                         break;
 
                     } // case 1 right only
+
+                    case 2: // case 2 Descending
+                    {
+                        int offset = (int) (1 + (HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW + 1) * 2 * (0.25 * h - 0.25)) - 1; // Generates 1, 13, 25, ...
+                        System.out.println("offset: " + offset);
+                        lines.add(dashLine);
+                        // System.out.println(dashLine);
+
+                        // Draw location name line
+                        String locationNameLine = "";
+                        for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
+                        {
+                            locationNameLine += "|" + this.locations.get(offset+i).getName();
+                            for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+i).getName().length()-2; j++)
+                            {
+                                locationNameLine += " ";
+                            }
+                            locationNameLine += "|";
+                            if(i != 1){
+                                locationNameLine += " ";
+                            }
+                        }
+                        lines.add(locationNameLine);
+                        // System.out.println(locationNameLine);
+
+
+                        // Loop through each colour and print the right number of them
+                        for(Colour c : Colour.values())
+                        {
+                            String colourLine = "";
+                            for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
+                            {
+                                colourLine += "|";
+                                colourLine += this.locations.get(offset+i).numberOfPieces(c);
+                                colourLine += " ";
+                                colourLine += c;
+                                for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
+                                    colourLine += " ";
+                                }
+                                colourLine += "|";
+                                if(i != 1){
+                                    colourLine += " ";
+                                }
+                            }
+                            lines.add(colourLine);
+                            // System.out.println(colourLine);
+                        }
+
+                        // Re-add the full line of dashes
+                        lines.add(dashLine);
+                        // System.out.println(dashLine);
+
+                        // Draw a blank line
+                        lines.add("");
+
+                        break;
+
+                    } // case 2 descending
                 } // switch
             } // for (int h)
 
