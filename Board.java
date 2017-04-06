@@ -358,21 +358,36 @@ public class Board implements BoardInterface
                         int offset = (int) ((HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW+1) * (h / 2.0) - 1); // Generates 6, 18, 30, ...
                         System.out.println("offset: " + offset);
 
-                        // Draw the dashed line
-                        lines.add(dashLine);
+
+                        // Generate the top/bottom border
+                        String dashBorder = "";
+                        // Draw the right number of white spaces first
+                        for(int i=1; i<=(HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX+1)*(HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW-1)+1; i++)
+                        {
+                            dashBorder += " ";
+                        }
+                        // Draw the remaining dashes
+                        for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-2; i++){
+                            dashBorder += "-";
+                        }
+                        dashBorder += " ";
+                        lines.add(dashBorder);
 
 
                         // Draw location name line
                         String locationNameLine = "";
-
                         // Draw the right number of white spaces first
                         for(int i=1; i<=(HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX+1)*(HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW-1); i++)
                         {
                             locationNameLine += " ";
                         }
-
                         // Print | and the location name
-                        locationNameLine += "|" + this.locations.get(offset+1).getName() + "|";
+                        locationNameLine += "|" + this.locations.get(offset+1).getName();
+                        for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+1).getName().length()-2; j++)
+                        {
+                            locationNameLine += " ";
+                        }
+                        locationNameLine += "|";
                         lines.add(locationNameLine);
                         // System.out.println(locationNameLine);
 
@@ -381,31 +396,31 @@ public class Board implements BoardInterface
                         for(Colour c : Colour.values())
                         {
                             String colourLine = "";
-                            for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
+                            // Draw the right number of white spaces first
+                            for(int i=1; i<=(HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX+1)*(HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW-1); i++)
                             {
-                                colourLine += "|";
-                                colourLine += this.locations.get(offset+i).numberOfPieces(c);
                                 colourLine += " ";
-                                colourLine += c;
-                                for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
-                                    colourLine += " ";
-                                }
-                                colourLine += "|";
-                                if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
-                                    colourLine += " ";
-                                }
                             }
+                            // Print the colour details
+                            colourLine += "|";
+                            colourLine += this.locations.get(offset+1).numberOfPieces(c);
+                            colourLine += " ";
+                            colourLine += c;
+                            // Print the remaining spaces to fill the box
+                            for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+1).numberOfPieces(c)).length(); j++){
+                                colourLine += " ";
+                            }
+                            colourLine += "|";
                             lines.add(colourLine);
                             // System.out.println(colourLine);
                         }
 
-                        // Re-add the full line of dashes
-                        lines.add(dashLine);
-                        // System.out.println(dashLine);
+                        // Re-add the border dash line
+                        lines.add(dashBorder);
+                        // System.out.println(dashBorder);
 
                         // Draw a blank line
                         lines.add("");
-
 
                         break;
 
@@ -423,6 +438,7 @@ public class Board implements BoardInterface
         }
         catch(Exception e)
         {
+            // This will never happen
             return e.toString();
         }
 
