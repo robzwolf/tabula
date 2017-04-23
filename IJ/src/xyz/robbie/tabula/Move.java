@@ -37,7 +37,7 @@ public class Move implements MoveInterface
     }
 
     // interface is wrong (says range 0-6, should be range 1-6) - see https://duo.dur.ac.uk/bbcswebdav/pid-3988457-dt-content-rid-16369722_2/courses/COMP1011_2016/Tabula%20FAQs%281%29.pdf, retrieved 03/04/2017
-    // name setDiceValue should really be name setDieValue
+    // setDiceValue() should really be named setDieValue()
     public void setDiceValue(int diceValue) throws IllegalMoveException
     {
         if(1 <= diceValue && diceValue <= DieInterface.NUMBER_OF_SIDES_ON_DIE)

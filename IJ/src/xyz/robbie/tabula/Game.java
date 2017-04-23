@@ -77,7 +77,6 @@ public class Game implements GameInterface
         System.out.println("Welcome to Tabula North-East.");
 		
         String mode = "";
-        boolean preferNotV =false;
 		
         if(args.length > 0){
             if(args[0].equals("-c"))
@@ -116,40 +115,74 @@ public class Game implements GameInterface
 		else if(mode.equals("dev"))
 		{	
 				Board b = new Board();
+				Dice d = new Dice();
 				
 				PlayerInterface humanConsolePlayerOne = new HumanConsolePlayer();
 				PlayerInterface humanConsolePlayerTwo = new HumanConsolePlayer();
 				
 				g.setPlayer(Colour.GREEN, humanConsolePlayerOne);
 				g.setPlayer(Colour.BLUE, humanConsolePlayerTwo);
-				
-				
+
+
+
 				do {
 					System.out.println("Choose from the following options:");
-					System.out.println("(e)xit, print all (l)ocations, print (b)oard");
+					System.out.println("(e)xit, print all (l)ocations, print (b)oard, (r)oll dice, print dice (v)alues");
 					input = scanner.nextLine().toLowerCase();
-					
-					if(input.equals("l"))
-					{
-						System.out.println(b.getStartLocation());
-						for(int i=1;i<BoardInterface.NUMBER_OF_LOCATIONS;i++)
-						{
-							try
-							{
-							System.out.println(b.getBoardLocation(i));
-							}
-							catch (NoSuchLocationException e)
-							{
-								// Won't ever happen
-							}
-						}
-						System.out.println(b.getEndLocation());
-						System.out.println(b.getKnockedLocation());
-					}
-					else if(input.equals("b"))
-					{
-						System.out.println(b);
-					}
+
+					switch(input)
+                    {
+                        case "l": // print all locations
+                        {
+                            System.out.println(b.getStartLocation());
+                            for(int i=1;i<BoardInterface.NUMBER_OF_LOCATIONS;i++)
+                            {
+                                try
+                                {
+                                    System.out.println(b.getBoardLocation(i));
+                                }
+                                catch (NoSuchLocationException e)
+                                {
+                                    // Won't ever happen
+                                }
+                            }
+                            System.out.println(b.getEndLocation());
+                            System.out.println(b.getKnockedLocation());
+                            break;
+                        }
+
+                        case "b": // print board
+                        {
+                            System.out.println(b);
+                            break;
+                        }
+
+                        case "r": // roll dice
+                        {
+                            d.roll();
+                            break;
+                        }
+
+                        case "e": // exit
+                        {
+                            break;
+                            // will finish do-while loop
+                        }
+
+                        case "v": // print dice values
+                        {
+                            try
+                            {
+                                System.out.println(d.getValues());
+                            }
+                            catch (NotRolledYetException e)
+                            {
+                                System.out.println(e);
+                            }
+                            break;
+                        }
+                    }
+
 					
 				} while (!input.equals("e"));
 		}

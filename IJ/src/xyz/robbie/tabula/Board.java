@@ -317,23 +317,16 @@ public class Board implements BoardInterface
     {
         List<String> lines = new ArrayList<String>();
         /*
-
         VERTICAL LAYOUT
-
         [ 0]
         [ 1]
-        [ 2]
-        [ 3]
         ...
         [ 9]
         [10]
-        [11]
         ...
-        [23]
         [24]
         [ F]
         [ K]
-
         */
 
         // Calculate the maximum length of colour string
