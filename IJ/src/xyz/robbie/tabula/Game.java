@@ -26,10 +26,12 @@ public class Game implements GameInterface
 
     private HashMap<Colour, PlayerInterface> players;
     private Colour currentColour;
+    private Board board;
 
     public Game()
     {
         this.players = new HashMap<Colour, PlayerInterface>();
+        board = new Board();
     }
 
     public void setPlayer(Colour colour, PlayerInterface player)
@@ -62,6 +64,11 @@ public class Game implements GameInterface
 
     }
 
+    private Board getBoard()
+    {
+        return board;
+    }
+
     /**
     * The main method menu should allow users to:
     *      set the players (human or computer);
@@ -74,63 +81,49 @@ public class Game implements GameInterface
     */
     public static void main(String[] args)
     {
-        System.out.println("Welcome to Tabula North-East.");
-		
         String mode = "";
-		
-        if(args.length > 0){
-            if(args[0].equals("-c"))
-            {
-                mode = "c";
-                System.out.println("You have elected to start in command line mode.");
-            }
-            else if(args[0].equals("-g"))
-            {
-                mode = "g";
-                System.out.println("You have elected to start in GUI mode.");
-            }
-			else if (args[0].equals("-dev"))
-			{
-				mode = "dev";
-			}
-            else
-            {
-                System.out.println("Your command line parameter was not recognised. Use -c to start in command line mode or -g to start in GUI mode. Defaulting to command line mode.");
-            }
+
+        if(args.length <= 0){
+            System.out.println("You did not specify whether to start in command line or GUI mode.\nDefaulting to command line mode.");
+            mode = "-c";
         }
         else
         {
-            mode = "c";
-            System.out.println("You did not specify whether to start in command line or GUI mode.\nDefaulting to command line mode.");
+            mode = args[0];
         }
+
         Scanner scanner = new Scanner(System.in);
         String input = "";
-		
+
 		Game g = new Game();
+		Board b = g.getBoard();
 
-		if(mode.equals("g"))
-		{
-			// GUI play
-		}
-		else if(mode.equals("dev"))
-		{	
-				Board b = new Board();
-				Dice d = new Dice();
-				
-				PlayerInterface humanConsolePlayerOne = new HumanConsolePlayer();
-				PlayerInterface humanConsolePlayerTwo = new HumanConsolePlayer();
-				
-				g.setPlayer(Colour.GREEN, humanConsolePlayerOne);
-				g.setPlayer(Colour.BLUE, humanConsolePlayerTwo);
+		switch(mode){
+            case "-g":
+            {
+                // GUI play
+                break;
+            }
 
+            case "-dev":
+            {
+                System.out.println("Welcome to Tabula North-East.");
 
+//                Board b = new Board();
+                Dice d = new Dice();
 
-				do {
-					System.out.println("Choose from the following options:");
-					System.out.println("(e)xit, print all (l)ocations, print (b)oard, (r)oll dice, print dice (v)alues");
-					input = scanner.nextLine().toLowerCase();
+                PlayerInterface humanConsolePlayerOne = new HumanConsolePlayer();
+                PlayerInterface humanConsolePlayerTwo = new HumanConsolePlayer();
 
-					switch(input)
+                g.setPlayer(Colour.GREEN, humanConsolePlayerOne);
+                g.setPlayer(Colour.BLUE, humanConsolePlayerTwo);
+
+                do {
+                    System.out.println("Choose from the following options:");
+                    System.out.println("(e)xit, print all (l)ocations, print (b)oard, (r)oll dice, print dice (v)alues");
+                    input = scanner.nextLine().toLowerCase();
+
+                    switch(input)
                     {
                         case "l": // print all locations
                         {
@@ -183,14 +176,21 @@ public class Game implements GameInterface
                         }
                     }
 
-					
-				} while (!input.equals("e"));
-		}
-		else // must have mode == c
-		{
-			// command line play
-		}
-		
-		
-    }
-}
+
+                } while (!input.equals("e"));
+                break;
+            }
+
+            case "-c":
+            {
+                System.out.println("Welcome to Tabula North-East.");
+                break;
+            }
+
+            default:
+            {
+                System.out.println("Your command line parameter was not recognised. Use -c to start in command line mode or -g to start in GUI mode.");
+            }
+        } // end switch
+    } // end main()
+} // end class

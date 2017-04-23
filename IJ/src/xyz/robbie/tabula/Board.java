@@ -29,7 +29,6 @@ public class Board implements BoardInterface
     private List<LocationInterface> locations;
 
     private static final String[] locationNames = {
-        "START",            //  0
         "Newcastle",        //  1
         "Gateshead",        //  2
         "Sunderland",       //  3
@@ -53,14 +52,15 @@ public class Board implements BoardInterface
         "Bishop Auckland",  // 21
         "Newton Aycliffe",  // 22
         "Spennymoor",       // 23
-        "Durham",           // 24
-        "FINISH",           // 25
-        "KNOCKED"           // 26 (Holding Area)
+        "Durham"            // 24
     };
+
+    private static final String START_NAME = "START";
+    private static final String FINISH_NAME = "FINISH";
+    private static final String KNOCKED_NAME = "KNOCKED";
 
     public Board()
     {
-        setVerticalToString(true);
 
         locations = new ArrayList<LocationInterface>();
 
@@ -74,8 +74,29 @@ public class Board implements BoardInterface
         //     START (0, OFF), 1 (ON), 2 (ON), ..., NUMBER_OF_LOCATIONS-1 (23, ON), NUMBER_OF_LOCATIONS (24, ON), END (25, OFF), KNOCKED (26, OFF)
         for(int i=0; i<NUMBER_OF_LOCATIONS+3; i++)
         {
-            String locName = i>=locationNames.length ? "Town "+i : locationNames[i];
-            System.out.println("Location #" + i + ": " + locName);
+            String locName;
+            if(i == 0)
+            {
+                locName = START_NAME;
+            }
+            else if(i == NUMBER_OF_LOCATIONS + 1)
+            {
+                locName = FINISH_NAME;
+            }
+            else if(i == NUMBER_OF_LOCATIONS + 2)
+            {
+                locName = KNOCKED_NAME;
+            }
+            else if(1 <= i && i <= locationNames.length)
+            {
+                locName = locationNames[i-1];
+            }
+            else
+            {
+                locName = "Town #" + i;
+            }
+            //String locName = i>=locationNames.length ? "Town "+i : locationNames[i];
+//            System.out.println("Location #" + i + ": " + locName);
 
             Location l = new Location(locName);
 
