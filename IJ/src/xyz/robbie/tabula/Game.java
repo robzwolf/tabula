@@ -109,7 +109,6 @@ public class Game implements GameInterface
             {
                 System.out.println("Welcome to Tabula North-East.");
 
-//                Board b = new Board();
                 Dice d = new Dice();
 
                 PlayerInterface humanConsolePlayerOne = new HumanConsolePlayer();
@@ -120,7 +119,7 @@ public class Game implements GameInterface
 
                 do {
                     System.out.println("Choose from the following options:");
-                    System.out.println("(e)xit, print all (l)ocations, print (b)oard, (r)oll dice, print dice (v)alues");
+                    System.out.println("(e)xit, print all (l)ocations, print (b)oard, (r)oll dice, print dice (v)alues, (c)lone and print new board");
                     input = scanner.nextLine().toLowerCase();
 
                     switch(input)
@@ -173,6 +172,12 @@ public class Game implements GameInterface
                                 System.out.println(e);
                             }
                             break;
+                        }
+
+                        case "c": // clone and print new board
+                        {
+                            BoardInterface c = b.clone();
+                            System.out.println(c);
                         }
                     }
 

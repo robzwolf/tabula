@@ -252,27 +252,41 @@ public class Board implements BoardInterface
 
         BoardInterface cloneBoard = new Board();
 
-        for(int i=0; i<this.locations.size(); i++)
+        for(int i=0; i<=NUMBER_OF_LOCATIONS+2; i++)
         {
             LocationInterface tl = null;
             LocationInterface cl = null;
-            try{
-                cl = cloneBoard.getBoardLocation(i); // cl = Clone Location
-                tl = this.getBoardLocation(i); // This Board's Location
-            }
-            catch(NoSuchLocationException e)
+            System.out.println("i = " + i);
+
+            if(i == 0)
             {
-                // Will never happen as the number of locations in this and in cloneBoard are defined by BoardInterface.NUMBER_OF_LOCATIONS
-                System.out.println("Error getting location " + i);
-                if(cl instanceof LocationInterface)
+                cl = cloneBoard.getStartLocation();
+                tl = this.getStartLocation();
+            }
+            else if(i == NUMBER_OF_LOCATIONS+1)
+            {
+                cl = cloneBoard.getEndLocation();
+                tl = this.getEndLocation();
+            }
+            else if(i == NUMBER_OF_LOCATIONS+2)
+            {
+                cl = cloneBoard.getKnockedLocation();
+                tl = this.getKnockedLocation();
+            }
+            else
+            {
+                try
                 {
-                    System.out.println("cl instanceof LocationInterface TRUE");
+
+                    cl = cloneBoard.getBoardLocation(i);
+                    tl = this.getBoardLocation(i);
                 }
-                if(tl instanceof LocationInterface)
+                catch(NoSuchLocationException e)
                 {
-                    System.out.println("tl instanceof LocationInterface TRUE");
+                    // Something went wrong, but we this should never happen
+                    System.out.println(e);
+//                  continue;
                 }
-                continue;
             }
 
             // Transfer over the Location name
@@ -298,14 +312,11 @@ public class Board implements BoardInterface
                     }
                 }
             }
+
+            System.out.println("Copied location " + i);
         }
         return cloneBoard;
     }
-
-//    private String getNumPadding(int num, int maxNumberLength)
-//    {
-//
-//    }
 
     private int getLengthOfNumber(int num)
     {
