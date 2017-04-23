@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class Board implements BoardInterface
 {
+    // Determines whether to print all locations in a vertical list (as opposed to S-shape) in toString()
+    private boolean verticalToString;
 
     private String name;
 
@@ -58,6 +60,8 @@ public class Board implements BoardInterface
 
     public Board()
     {
+        setVerticalToString(true);
+
         locations = new ArrayList<LocationInterface>();
 
         // Create the list of Locations
@@ -86,6 +90,16 @@ public class Board implements BoardInterface
 
         // Set the board name
         setName("North-East Board");
+    }
+
+    public void setVerticalToString(boolean v)
+    {
+        verticalToString = v;
+    }
+
+    public boolean getVerticalToString()
+    {
+        return verticalToString;
     }
 
     public void setName(String name)
@@ -249,197 +263,282 @@ public class Board implements BoardInterface
         return cloneBoard;
     }
 
+//    private String getNumPadding(int num, int maxNumberLength)
+//    {
+//
+//    }
+
+    private int getLengthOfNumber(int num)
+    {
+        return (int) Math.floor(Math.log10(num)) + 1;
+    }
+    
+    private String getNOf(String str, int n)
+    {
+        String output = "";
+        if(n > 0)
+        {
+            for(int i=1;i<=n;i++)
+            {
+                output += str;
+            }
+            return output;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
     public String toString()
     {
         List<String> lines = new ArrayList<String>();
-		
-		/*
-		
-		LAYOUT
-		
-		[ 1]>[ 2]>[ 3]>[ 4]>[ 5] Asc.  (0)
-		[11]<[10]<[ 9]<[ 8]<[ 7] Desc. (1)
-		[12]>[13]>[14]>[15]>[16] Asc.  (0)
-		[21]<[20]<[19]<[18]<[17] Desc. (1)
-		[22]>[23]>[24]           Asc.  (0)
-		
-		*/
-		
-		try
-        {
-			double rowsToDraw = Math.ceil(NUMBER_OF_LOCATIONS*1.0 / HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW);
-            System.out.println(rowsToDraw + " rows to draw");
+        if(verticalToString){
 
-            // Generate entire dashed line
-            String dashLine = "";
-            for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-            {
-                dashLine += " ";
-                for(int j=2; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-1; j++)
-                {
-                    dashLine += "-";
-                }
-                dashLine += " ";
-                if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){ // i.e. not the last item on the row
-                    dashLine += " "; // a single space
-                }
-            }
-            dashLine += " ";
+            /*
 
-            for(int h=1; h<=rowsToDraw; h++)
-            {
-				
-				int offset = (int) ((h-1)*HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW); // Generates 0, 10, 20, ... for case 0  |  Generates 5, 15, 25, ... for case 1
-				
-				// System.out.println("CASE (h-1)%2: " + (h-1)%2 + ", h: " + h);// + ", offset: " + offset);
+            VERTICAL LAYOUT
 
-				switch((h-1)%2)
-                {
-                    case 0: // case 0 Ascending
-                    {
-                        System.out.println("case0 asc offset:  " + offset);
-                        lines.add(dashLine);
-                        // System.out.println(dashLine);
+            [ 0]
+            [ 1]
+            [ 2]
+            [ 3]
+            ...
+            [ 9]
+            [10]
+            [11]
+            ...
+            [23]
+            [24]
+            [ F]
 
-                        // Draw location name line
-                        String locationNameLine = "";
-                        for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-                        {
-                            locationNameLine += "|" + this.locations.get(offset+i).getName();
-                            for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+i).getName().length()-2; j++)
-                            {
-                                locationNameLine += " ";
-                            }
-                            locationNameLine += "|";
-                            if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
-                                locationNameLine += ">";
-                            }
-                        }
-                        lines.add(locationNameLine);
-                        // System.out.println(locationNameLine);
-
-
-                        // Loop through each colour and print the right number of them
-                        for(Colour c : Colour.values())
-                        {
-                            String colourLine = "";
-                            for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-                            {
-								if(!this.locations.get(offset+i).getName().equals("Finish"))
-								{
-									colourLine += "|";
-									colourLine += this.locations.get(offset+i).numberOfPieces(c);
-									colourLine += " ";
-									colourLine += c;
-									for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
-										colourLine += " ";
-									}
-									colourLine += "|";
-									if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
-										colourLine += ">";
-									}
-								}
-								else
-								{
-									// Leave box blank
-								}
-                            }
-                            lines.add(colourLine);
-                            // System.out.println(colourLine);
-                        }
-
-                        // Re-add the full line of dashes
-                        lines.add(dashLine);
-                        // System.out.println(dashLine);
-
-                        // Draw a blank line
-                        lines.add("");
-
-                        break;
-
-
-                    } // case 0 ascending
-
-					
-                    case 1: // case 1 Descending
-                    {
-                        System.out.println("case1 desc offset: " + offset);
-                        lines.add(dashLine);
-                        // System.out.println(dashLine);
-
-                        // Draw location name line
-                        String locationNameLine = "";
-                        for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
-                        {
-                            locationNameLine += "|" + this.locations.get(offset+i).getName();
-                            for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+i).getName().length()-2; j++)
-                            {
-                                locationNameLine += " ";
-                            }
-                            locationNameLine += "|";
-                            if(i != 1){
-                                locationNameLine += "<";
-                            }
-                        }
-                        lines.add(locationNameLine);
-                        // System.out.println(locationNameLine);
-
-
-                        // Loop through each colour and print the right number of them
-                        for(Colour c : Colour.values())
-                        {
-                            String colourLine = "";
-                            for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
-                            {
-								if(!this.locations.get(offset+i).getName().equals("Finish"))
-								{										
-									colourLine += "|";
-									colourLine += this.locations.get(offset+i).numberOfPieces(c);
-									colourLine += " ";
-									colourLine += c;
-									for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
-										colourLine += " ";
-									}
-									colourLine += "|";
-									if(i != 1){
-										colourLine += "<";
-									}
-								}
-								else
-								{
-									// Leave box blank
-								}
-                            }
-                            lines.add(colourLine);
-                            // System.out.println(colourLine);
-                        }
-
-                        // Re-add the full line of dashes
-                        lines.add(dashLine);
-                        // System.out.println(dashLine);
-
-                        // Draw a blank line
-                        lines.add("");
-
-                        break;
-
-                    } // case 2 descending
-                } // switch
-            } // for (int h)
+            */
 
             String output = "";
-            for(String line : lines)
+
+            // Calculate the maximum length of colour string
+            int maxColourLength = 0;
+            for(Colour c : Colour.values())
             {
-                output += line + "\n";
+                if(c.toString().length() > maxColourLength)
+                {
+                    maxColourLength = c.toString().length();
+                }
             }
+            System.out.println("Max colour length is " + maxColourLength);
+
+
+            // Calculate the biggest number length
+            // Biggest number will be number of pieces per colour
+            // Length will be floor (log_10 (NUMBER_OF_PIECES)) + 1
+            int maxNumberLength = getLengthOfNumber(BoardInterface.PIECES_PER_PLAYER);
+            System.out.println("Max number length is " + maxNumberLength);
+
+            // space + maxNumberLength + space + maxColourLength + space
+            int boxInnerWidth = maxNumberLength + maxColourLength + 3;
+            System.out.println("Inner box width is " + boxInnerWidth);
+
+            String thisLine = "";
+
+            // Print start location
+            thisLine += "  " + getNOf("-",boxInnerWidth);
+            lines.add(thisLine);
+
+
+
             return output;
 
         }
-        catch(Exception e)
+        else
         {
-            // This will never happen
-            return e.toString();
+
+            /*
+
+            OLD LAYOUT
+
+            [ 1]>[ 2]>[ 3]>[ 4]>[ 5] Asc.  (0)
+            [11]<[10]<[ 9]<[ 8]<[ 7] Desc. (1)
+            [12]>[13]>[14]>[15]>[16] Asc.  (0)
+            [21]<[20]<[19]<[18]<[17] Desc. (1)
+            [22]>[23]>[24]           Asc.  (0)
+
+		*/
+
+            try
+            {
+                double rowsToDraw = Math.ceil(NUMBER_OF_LOCATIONS*1.0 / HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW);
+                System.out.println(rowsToDraw + " rows to draw");
+
+                // Generate entire dashed line
+                String dashLine = "";
+                for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
+                {
+                    dashLine += " ";
+                    for(int j=2; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-1; j++)
+                    {
+                        dashLine += "-";
+                    }
+                    dashLine += " ";
+                    if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){ // i.e. not the last item on the row
+                        dashLine += " "; // a single space
+                    }
+                }
+                dashLine += " ";
+
+                for(int h=1; h<=rowsToDraw; h++)
+                {
+
+                    int offset = (int) ((h-1)*HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW); // Generates 0, 10, 20, ... for case 0  |  Generates 5, 15, 25, ... for case 1
+
+                    // System.out.println("CASE (h-1)%2: " + (h-1)%2 + ", h: " + h);// + ", offset: " + offset);
+
+                    switch((h-1)%2)
+                    {
+                        case 0: // case 0 Ascending
+                        {
+                            System.out.println("case0 asc offset:  " + offset);
+                            lines.add(dashLine);
+                            // System.out.println(dashLine);
+
+                            // Draw location name line
+                            String locationNameLine = "";
+                            for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
+                            {
+                                locationNameLine += "|" + this.locations.get(offset+i).getName();
+                                for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+i).getName().length()-2; j++)
+                                {
+                                    locationNameLine += " ";
+                                }
+                                locationNameLine += "|";
+                                if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
+                                    locationNameLine += ">";
+                                }
+                            }
+                            lines.add(locationNameLine);
+                            // System.out.println(locationNameLine);
+
+
+                            // Loop through each colour and print the right number of them
+                            for(Colour c : Colour.values())
+                            {
+                                String colourLine = "";
+                                for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
+                                {
+                                    if(!this.locations.get(offset+i).getName().equals("Finish"))
+                                    {
+                                        colourLine += "|";
+                                        colourLine += this.locations.get(offset+i).numberOfPieces(c);
+                                        colourLine += " ";
+                                        colourLine += c;
+                                        for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
+                                            colourLine += " ";
+                                        }
+                                        colourLine += "|";
+                                        if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
+                                            colourLine += ">";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Leave box blank
+                                    }
+                                }
+                                lines.add(colourLine);
+                                // System.out.println(colourLine);
+                            }
+
+                            // Re-add the full line of dashes
+                            lines.add(dashLine);
+                            // System.out.println(dashLine);
+
+                            // Draw a blank line
+                            lines.add("");
+
+                            break;
+
+
+                        } // case 0 ascending
+
+
+                        case 1: // case 1 Descending
+                        {
+                            System.out.println("case1 desc offset: " + offset);
+                            lines.add(dashLine);
+                            // System.out.println(dashLine);
+
+                            // Draw location name line
+                            String locationNameLine = "";
+                            for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
+                            {
+                                locationNameLine += "|" + this.locations.get(offset+i).getName();
+                                for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+i).getName().length()-2; j++)
+                                {
+                                    locationNameLine += " ";
+                                }
+                                locationNameLine += "|";
+                                if(i != 1){
+                                    locationNameLine += "<";
+                                }
+                            }
+                            lines.add(locationNameLine);
+                            // System.out.println(locationNameLine);
+
+
+                            // Loop through each colour and print the right number of them
+                            for(Colour c : Colour.values())
+                            {
+                                String colourLine = "";
+                                for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
+                                {
+                                    if(!this.locations.get(offset+i).getName().equals("Finish"))
+                                    {
+                                        colourLine += "|";
+                                        colourLine += this.locations.get(offset+i).numberOfPieces(c);
+                                        colourLine += " ";
+                                        colourLine += c;
+                                        for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
+                                            colourLine += " ";
+                                        }
+                                        colourLine += "|";
+                                        if(i != 1){
+                                            colourLine += "<";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Leave box blank
+                                    }
+                                }
+                                lines.add(colourLine);
+                                // System.out.println(colourLine);
+                            }
+
+                            // Re-add the full line of dashes
+                            lines.add(dashLine);
+                            // System.out.println(dashLine);
+
+                            // Draw a blank line
+                            lines.add("");
+
+                            break;
+
+                        } // case 2 descending
+                    } // switch
+                } // for (int h)
+            } // end try
+            catch(Exception e)
+            {
+                // This will never happen
+                return e.toString();
+            } // end catch
+        } // end if -notv
+
+        String output = "";
+        for(String line : lines)
+        {
+            output += line + "\n";
         }
+        return output;
 
     }
 }

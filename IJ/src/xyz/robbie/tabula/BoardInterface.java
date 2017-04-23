@@ -21,7 +21,7 @@ public interface BoardInterface extends Cloneable{
      * note that you should not redefine this constant in the implementing class
      * but you can (and should) use it in the implementing class.
      */
-    static final int NUMBER_OF_LOCATIONS = 21;
+    static final int NUMBER_OF_LOCATIONS = 24;
 
     public void setName(String name);
 
