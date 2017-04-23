@@ -252,25 +252,22 @@ public class Board implements BoardInterface
     public String toString()
     {
         List<String> lines = new ArrayList<String>();
-
-        /*
-
-        [ 1] [ 2] [ 3] [ 4] [ 5] Ascending  (0)
-                            [ 6] Right only (1)
-        [11] [10] [ 9] [ 8] [ 7] Descending (2)
-        [12]                     Left only  (3)
-        [13] [14] [15] [16] [17] Ascending  (0)
-                            [18] Right only (1)
-        [23] [22] [21] [20] [19] Descending (2)
-        [24]                     Left only  (3)
-
-        */
 		
 		/*
-
-        try
+		
+		LAYOUT
+		
+		[ 1]>[ 2]>[ 3]>[ 4]>[ 5] Asc.  (0)
+		[11]<[10]<[ 9]<[ 8]<[ 7] Desc. (1)
+		[12]>[13]>[14]>[15]>[16] Asc.  (0)
+		[21]<[20]<[19]<[18]<[17] Desc. (1)
+		[22]>[23]>[24]           Asc.  (0)
+		
+		*/
+		
+		try
         {
-            double rowsToDraw = Math.floor(NUMBER_OF_LOCATIONS / (HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW+1.0)) + Math.ceil(NUMBER_OF_LOCATIONS / (HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW+1.0));
+			double rowsToDraw = Math.ceil(NUMBER_OF_LOCATIONS / HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW);
             System.out.println(rowsToDraw + " rows to draw");
 
             // Generate entire dashed line
@@ -291,16 +288,16 @@ public class Board implements BoardInterface
 
             for(int h=1; h<=rowsToDraw; h++)
             {
-                // System.out.println("h: " + h);
+				
+				int offset = (int) ((h-1)*HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW); // Generates 0, 10, 20, ... for case 0  |  Generates 5, 15, 25, ... for case 1
+				
+				// System.out.println("CASE (h-1)%2: " + (h-1)%2 + ", h: " + h);// + ", offset: " + offset);
 
-                System.out.println("CASE (h-1)%4: " + (h-1)%4 + ", h: " + h);// + ", offset: " + offset);
-
-                switch((h-1)%4)
+				switch((h-1)%2)
                 {
                     case 0: // case 0 Ascending
                     {
-                        int offset = (int) (1 + (HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW + 1) * 2 * (0.25 * h - 0.25)) - 1; // Generates 1, 13, 25, ...
-                        System.out.println("offset: " + offset);
+                        System.out.println("case0 asc offset:  " + offset);
                         lines.add(dashLine);
                         // System.out.println(dashLine);
 
@@ -315,7 +312,7 @@ public class Board implements BoardInterface
                             }
                             locationNameLine += "|";
                             if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
-                                locationNameLine += " ";
+                                locationNameLine += ">";
                             }
                         }
                         lines.add(locationNameLine);
@@ -337,7 +334,7 @@ public class Board implements BoardInterface
                                 }
                                 colourLine += "|";
                                 if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
-                                    colourLine += " ";
+                                    colourLine += ">";
                                 }
                             }
                             lines.add(colourLine);
@@ -356,84 +353,10 @@ public class Board implements BoardInterface
 
                     } // case 0 ascending
 
-                    case 1: // case 1 Right only
+					
+                    case 1: // case 1 Descending
                     {
-
-                        int offset = (int) ((HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW+1) * (h / 2.0) - 1); // Generates 6, 18, 30, ...
-                        System.out.println("offset: " + offset);
-
-
-                        // Generate the top/bottom border
-                        String dashBorder = "";
-                        // Draw the right number of white spaces first
-                        for(int i=1; i<=(HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX+1)*(HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW-1)+1; i++)
-                        {
-                            dashBorder += " ";
-                        }
-                        // Draw the remaining dashes
-                        for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-2; i++){
-                            dashBorder += "-";
-                        }
-                        dashBorder += " ";
-                        lines.add(dashBorder);
-
-
-                        // Draw location name line
-                        String locationNameLine = "";
-                        // Draw the right number of white spaces first
-                        for(int i=1; i<=(HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX+1)*(HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW-1); i++)
-                        {
-                            locationNameLine += " ";
-                        }
-                        // Print | and the location name
-                        locationNameLine += "|" + this.locations.get(offset+1).getName();
-                        for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+1).getName().length()-2; j++)
-                        {
-                            locationNameLine += " ";
-                        }
-                        locationNameLine += "|";
-                        lines.add(locationNameLine);
-                        // System.out.println(locationNameLine);
-
-
-                        // Loop through each colour and print the right number of them
-                        for(Colour c : Colour.values())
-                        {
-                            String colourLine = "";
-                            // Draw the right number of white spaces first
-                            for(int i=1; i<=(HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX+1)*(HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW-1); i++)
-                            {
-                                colourLine += " ";
-                            }
-                            // Print the colour details
-                            colourLine += "|";
-                            colourLine += this.locations.get(offset+1).numberOfPieces(c);
-                            colourLine += " ";
-                            colourLine += c;
-                            // Print the remaining spaces to fill the box
-                            for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+1).numberOfPieces(c)).length(); j++){
-                                colourLine += " ";
-                            }
-                            colourLine += "|";
-                            lines.add(colourLine);
-                            // System.out.println(colourLine);
-                        }
-
-                        // Re-add the border dash line
-                        lines.add(dashBorder);
-                        // System.out.println(dashBorder);
-
-                        // Draw a blank line
-                        lines.add("");
-
-                        break;
-
-                    } // case 1 right only
-
-                    case 2: // case 2 Descending
-                    {
-                        int offset = (int) (1 + (HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW + 1) * 2 * (0.25 * h - 0.25)) - 1; // Generates 1, 13, 25, ...
-                        System.out.println("offset: " + offset);
+                        System.out.println("case1 desc offset: " + offset);
                         lines.add(dashLine);
                         // System.out.println(dashLine);
 
@@ -448,7 +371,7 @@ public class Board implements BoardInterface
                             }
                             locationNameLine += "|";
                             if(i != 1){
-                                locationNameLine += " ";
+                                locationNameLine += "<";
                             }
                         }
                         lines.add(locationNameLine);
@@ -470,7 +393,7 @@ public class Board implements BoardInterface
                                 }
                                 colourLine += "|";
                                 if(i != 1){
-                                    colourLine += " ";
+                                    colourLine += "<";
                                 }
                             }
                             lines.add(colourLine);
@@ -503,10 +426,6 @@ public class Board implements BoardInterface
             // This will never happen
             return e.toString();
         }
-		
-		*/
-		
-		return "board";
 
     }
 }

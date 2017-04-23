@@ -33,8 +33,7 @@ public class Location implements LocationInterface
         }
     }
 
-    public String getName()
-    {
+    public String getName(){
         return name;
     }
 
@@ -169,6 +168,12 @@ public class Location implements LocationInterface
 
     public boolean isValid()
     {
+		
+		if(isEmpty())
+		{
+			return true;
+		}
+		
         // invalid if not mixed AND >0 of EACH colour
         boolean moreThanOneColour = false;
         Colour firstColourWithSomePieces = null;
@@ -192,5 +197,19 @@ public class Location implements LocationInterface
         }
         return !isMixed() && !moreThanOneColour;
     }
+	
+	// For debugging
+	public String toString()
+	{
+		String output = "getName(): " + getName();
+		output += "\nisValid(): " + isValid();
+		output += "\nisMixed(): " + isMixed();
+		output += "\nisEmpty(): " + isEmpty();
+		for(Colour c : Colour.values())
+		{
+			output += "\nnumberOfPieces(" + c + "): " + numberOfPieces(c);
+		}
+		return output + "\n";
+	}
 
 }

@@ -75,9 +75,9 @@ public class Game implements GameInterface
     public static void main(String[] args)
     {
         System.out.println("Welcome to Tabula North-East.");
-
+		
         String mode = "";
-
+		
         if(args.length > 0){
             if(args[0].equals("-c"))
             {
@@ -89,6 +89,10 @@ public class Game implements GameInterface
                 mode = "g";
                 System.out.println("You have elected to start in GUI mode.");
             }
+			else if (args[0].equals("-dev"))
+			{
+				mode = "dev";
+			}
             else
             {
                 System.out.println("Your command line parameter was not recognised. Use -c to start in command line mode or -g to start in GUI mode. Defaulting to command line mode.");
@@ -97,17 +101,62 @@ public class Game implements GameInterface
         else
         {
             mode = "c";
-            System.out.println("You did not specify whether to start in command line or GUI mode. Defaulting to command line mode.");
+            System.out.println("You did not specify whether to start in command line or GUI mode.\nDefaulting to command line mode.");
         }
         Scanner scanner = new Scanner(System.in);
         String input = "";
+		
+		Game g = new Game();
 
-        Board b = new Board();
-        System.out.println(b);
-
-        do {
-            System.out.println("Press E to exit.");
-            input = scanner.nextLine();
-        } while (!input.toLowerCase().equals("e"));
+		if(mode.equals("g"))
+		{
+			// GUI play
+		}
+		else if(mode.equals("dev"))
+		{	
+				Board b = new Board();
+				
+				PlayerInterface humanConsolePlayerOne = new HumanConsolePlayer();
+				PlayerInterface humanConsolePlayerTwo = new HumanConsolePlayer();
+				
+				g.setPlayer(Colour.GREEN, humanConsolePlayerOne);
+				g.setPlayer(Colour.BLUE, humanConsolePlayerTwo);
+				
+				
+				do {
+					System.out.println("Choose from the following options:");
+					System.out.println("(e)xit, print all (l)ocations, print (b)oard");
+					input = scanner.nextLine().toLowerCase();
+					
+					if(input.equals("l"))
+					{
+						System.out.println(b.getStartLocation());
+						for(int i=1;i<BoardInterface.NUMBER_OF_LOCATIONS;i++)
+						{
+							try
+							{
+							System.out.println(b.getBoardLocation(i));
+							}
+							catch (NoSuchLocationException e)
+							{
+								// Won't ever happen
+							}
+						}
+						System.out.println(b.getEndLocation());
+						System.out.println(b.getKnockedLocation());
+					}
+					else if(input.equals("b"))
+					{
+						System.out.println(b);
+					}
+					
+				} while (!input.equals("e"));
+		}
+		else // must have mode == c
+		{
+			// command line play
+		}
+		
+		
     }
 }

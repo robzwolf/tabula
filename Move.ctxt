@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Move()
+comment1.params=locationNumber
+comment1.target=void\ setSourceLocation(int)
+comment2.params=
+comment2.target=int\ getSourceLocation()
+comment3.params=diceValue
+comment3.target=void\ setDiceValue(int)
+comment4.params=
+comment4.target=int\ getDiceValue()
+numComments=5

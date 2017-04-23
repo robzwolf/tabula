@@ -118,3 +118,37 @@ public interface BoardInterface extends Cloneable{
      **/
     String toString();
 }
+
+
+/*
+Location names:
+
+        "Start",            //  0
+        "Newcastle",        //  1
+        "Gateshead",        //  2
+        "Sunderland",       //  3
+        "Peterlee",         //  4
+        "Hartlepool",       //  5
+        "Redcar",           //  6
+        "Saltburn",         //  7
+        "Staithes",         //  8
+        "Guisborough",      //  9
+        "Middlesbrough",    // 10
+        "Thornaby",         // 11
+        "Darlington",       // 12
+        "Barnard Castle",   // 13
+        "Middleton",        // 14
+        "Stanhope",         // 15
+        "Alston",           // 16
+        "Haltwhistle",      // 17
+        "Haydon Bridge",    // 18
+        "Hexham",           // 19
+        "Consett",          // 20
+        "Bishop Auckland",  // 21
+        "Newton Aycliffe",  // 22
+        "Spennymoor",       // 23
+        "Durham",           // 24
+        "Finish",           // 25
+        "Stockton"          // 26 (Holding Area)
+		
+*/
