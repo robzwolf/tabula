@@ -1,4 +1,4 @@
-package xyz.robbie.tabula;
+// package xyz.robbie.tabula;
 
 public class IllegalMoveException extends Exception {
     public IllegalMoveException(String message){

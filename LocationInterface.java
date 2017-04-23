@@ -1,4 +1,4 @@
-package xyz.robbie.tabula;
+// package xyz.robbie.tabula;
 
 /**
  * LocationInterface represents a single location on the board, but not its position

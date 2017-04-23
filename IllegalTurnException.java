@@ -1,4 +1,4 @@
-package xyz.robbie.tabula;
+// package xyz.robbie.tabula;
 
 public class IllegalTurnException extends Exception {
     public IllegalTurnException(String message){

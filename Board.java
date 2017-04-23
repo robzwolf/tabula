@@ -1,4 +1,4 @@
-package xyz.robbie.tabula;
+// package xyz.robbie.tabula;
 
 import java.util.List;
 import java.util.Set;
@@ -265,6 +265,8 @@ public class Board implements BoardInterface
         [24]                     Left only  (3)
 
         */
+		
+		/*
 
         try
         {
@@ -501,6 +503,10 @@ public class Board implements BoardInterface
             // This will never happen
             return e.toString();
         }
+		
+		*/
+		
+		return "board";
 
     }
 }
