@@ -1,4 +1,6 @@
-public class IllegalMoveException extends Exception{
+package xyz.robbie.tabula;
+
+public class IllegalMoveException extends Exception {
     public IllegalMoveException(String message){
         super(message);
     }

@@ -1,3 +1,5 @@
+package xyz.robbie.tabula;
+
 /**
  * LocationInterface represents a single location on the board, but not its position
  * Locations on the main part of the board may only contain a single colour of piece.

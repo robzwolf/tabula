@@ -1,3 +1,5 @@
+package xyz.robbie.tabula;
+
 import java.io.IOException;
 
 /**

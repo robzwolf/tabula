@@ -1,3 +1,5 @@
+package xyz.robbie.tabula;
+
 import java.util.*;
 
 /**
@@ -139,6 +141,7 @@ public class Location implements LocationInterface
         return null;
     }
 
+    ///// return true if and only if a piece of that colour can be removed (i.e. no IllegalMoveException)
     public boolean canRemovePiece(Colour colour)
     {
         // Can remove a piece if there are >0 pieces in this Location

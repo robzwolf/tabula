@@ -1,3 +1,5 @@
+package xyz.robbie.tabula;
+
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
@@ -108,7 +110,7 @@ public class Board implements BoardInterface
 
     public LocationInterface getBoardLocation(int locationNumber) throws NoSuchLocationException
     {
-        if(locationNumber < 1 || locationNumber > 24)
+        if(locationNumber < 1 || locationNumber > BoardInterface.NUMBER_OF_LOCATIONS)
         {
             throw new NoSuchLocationException("Requested location number was out of the given range (1 to " + NUMBER_OF_LOCATIONS + ").");
         }
