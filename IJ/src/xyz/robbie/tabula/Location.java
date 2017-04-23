@@ -123,21 +123,37 @@ public class Location implements LocationInterface
     public Colour addPieceGetKnocked(Colour colour) throws IllegalMoveException
     {
         // Do we need to knock a piece?
+        // First, check if the location is mixed
 
-        Colour otherColour = colour.otherColour();//Board.getOtherColour(colour);
-        if(numberOfPieces(otherColour) == 0) // Simply add the piece
+        if(!isMixed())
         {
-            pieces.put(colour,numberOfPieces(colour)+1);
-        }
-        else if(numberOfPieces(otherColour) == 1) // There is one piece of the other colour, so knock it
-        {
-            return otherColour;
+            Colour otherColour = colour.otherColour();//Board.getOtherColour(colour);
+            if(numberOfPieces(otherColour) == 0) // Simply add the piece
+            {
+//                pieces.put(colour,numberOfPieces(colour)+1);
+                incrementColour(colour);
+            }
+            else if(numberOfPieces(otherColour) == 1) // There is one piece of the other colour, so knock it
+            {
+                return otherColour;
+            }
+            else
+            {
+                throw new IllegalMoveException("Too many pieces of other colour in this location to knock.");
+            }
+            return null;
         }
         else
         {
-            throw new IllegalMoveException("Too many pieces of other colour in this location to knock.");
+//            pieces.put(colour,numberOfPieces(colour)+1);
+            incrementColour(colour);
+            return null;
         }
-        return null;
+    }
+
+    private void incrementColour(Colour c)
+    {
+        pieces.put(c,numberOfPieces(c)+1);
     }
 
     ///// return true if and only if a piece of that colour can be removed (i.e. no IllegalMoveException)

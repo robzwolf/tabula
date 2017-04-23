@@ -98,14 +98,6 @@ public class Game implements GameInterface
             {
                 System.out.println("Your command line parameter was not recognised. Use -c to start in command line mode or -g to start in GUI mode. Defaulting to command line mode.");
             }
-
-            if(args.length > 1)
-            {
-                if(args[1].equals("-notv"))
-                {
-                    preferNotV = true;
-                }
-            }
         }
         else
         {
@@ -124,10 +116,6 @@ public class Game implements GameInterface
 		else if(mode.equals("dev"))
 		{	
 				Board b = new Board();
-				if(preferNotV == true)
-                {
-                    b.setVerticalToString(false);
-                }
 				
 				PlayerInterface humanConsolePlayerOne = new HumanConsolePlayer();
 				PlayerInterface humanConsolePlayerTwo = new HumanConsolePlayer();

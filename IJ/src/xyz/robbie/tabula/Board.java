@@ -29,7 +29,7 @@ public class Board implements BoardInterface
     private List<LocationInterface> locations;
 
     private static final String[] locationNames = {
-        "Start",            //  0
+        "START",            //  0
         "Newcastle",        //  1
         "Gateshead",        //  2
         "Sunderland",       //  3
@@ -54,8 +54,8 @@ public class Board implements BoardInterface
         "Newton Aycliffe",  // 22
         "Spennymoor",       // 23
         "Durham",           // 24
-        "Finish",           // 25
-        "Stockton"          // 26 (Holding Area)
+        "FINISH",           // 25
+        "KNOCKED"           // 26 (Holding Area)
     };
 
     public Board()
@@ -65,11 +65,11 @@ public class Board implements BoardInterface
         locations = new ArrayList<LocationInterface>();
 
         // Create the list of Locations
-        // Location 0 ("Start") is the start location, off the board
-        // Location 1 ("Newcastle-upon-Tyne") is the first location on the board
+        // Location 0 ("START") is the start location, off the board
+        // Location 1 ("Newcastle") is the first location on the board
         // Location 24 ("Durham") is the last location on the board
-        // Location 25 ("Finish") is the finish location, off the board
-        // Location 26 ("Stockton-on-Tees") is the 'knocked' location
+        // Location 25 ("FINISH") is the finish location, off the board
+        // Location 26 ("KNOCKED") is the 'knocked' location
         // Hence locations list should look like:
         //     START (0, OFF), 1 (ON), 2 (ON), ..., NUMBER_OF_LOCATIONS-1 (23, ON), NUMBER_OF_LOCATIONS (24, ON), END (25, OFF), KNOCKED (26, OFF)
         for(int i=0; i<NUMBER_OF_LOCATIONS+3; i++)
@@ -90,6 +90,24 @@ public class Board implements BoardInterface
 
         // Set the board name
         setName("North-East Board");
+
+        // Pre-populate the START location
+        for(Colour c : Colour.values())
+        {
+            for(int i=1;i<=BoardInterface.PIECES_PER_PLAYER;i++)
+            {
+                try
+                {
+                    getStartLocation().addPieceGetKnocked(c);
+                }
+                catch (IllegalMoveException e)
+                {
+                    // This will never be called
+                    System.out.println(e);
+                }
+            }
+        }
+
     }
 
     public void setVerticalToString(boolean v)
@@ -270,7 +288,12 @@ public class Board implements BoardInterface
 
     private int getLengthOfNumber(int num)
     {
+        if(num == 0)
+        {
+            return 1;
+        }
         return (int) Math.floor(Math.log10(num)) + 1;
+        // Note also that num.toString().length() would also work
     }
     
     private String getNOf(String str, int n)
@@ -293,245 +316,78 @@ public class Board implements BoardInterface
     public String toString()
     {
         List<String> lines = new ArrayList<String>();
-        if(verticalToString){
+        /*
 
-            /*
+        VERTICAL LAYOUT
 
-            VERTICAL LAYOUT
+        [ 0]
+        [ 1]
+        [ 2]
+        [ 3]
+        ...
+        [ 9]
+        [10]
+        [11]
+        ...
+        [23]
+        [24]
+        [ F]
+        [ K]
 
-            [ 0]
-            [ 1]
-            [ 2]
-            [ 3]
-            ...
-            [ 9]
-            [10]
-            [11]
-            ...
-            [23]
-            [24]
-            [ F]
+        */
 
-            */
+        // Calculate the maximum length of colour string
+        int maxColourLength = 0;
+        for(Colour c : Colour.values())
+        {
+            if(c.toString().length() > maxColourLength)
+            {
+                maxColourLength = c.toString().length();
+            }
+        }
+//            System.out.println("Max colour length is " + maxColourLength);
 
-            String output = "";
 
-            // Calculate the maximum length of colour string
-            int maxColourLength = 0;
+        // Calculate the biggest number length
+        // Biggest number will be number of pieces per colour
+        // Length will be floor (log_10 (NUMBER_OF_PIECES)) + 1
+        int maxNumberLength = getLengthOfNumber(BoardInterface.PIECES_PER_PLAYER);
+//            System.out.println("Max number length is " + maxNumberLength);
+
+        // space + maxNumberLength + space + maxColourLength + space
+        int boxInnerWidth = maxNumberLength + maxColourLength + 3;
+//            System.out.println("Inner box width is " + boxInnerWidth);
+
+        String dashLine = getNOf("-",boxInnerWidth); // Store this for use in dashLine (efficiency)
+        String paddedDashLine = "  " + dashLine; // Use this one for efficiency
+
+        String thisLine = "";
+
+        // Print start + main (1, ..., NUMBER_OF_LOCATIONS) + finish + knocked locations
+        for(int i=0;i<=NUMBER_OF_LOCATIONS+2;i++){
+            // Special locations are START (index 0), FINISH (index NUMBER_OF_LOCATIONS+1), KNOCKED (NUMBER_OF_LOCATIONS+2)
+            boolean isSpecialLocation = i==0 || i==NUMBER_OF_LOCATIONS+1 || i== NUMBER_OF_LOCATIONS+2;
+
+
+            // Top line
+            lines.add(paddedDashLine);
+
+            // For each colour, loop through and print the number of each piece
+            boolean firstColour = true;
             for(Colour c : Colour.values())
             {
-                if(c.toString().length() > maxColourLength)
-                {
-                    maxColourLength = c.toString().length();
+                int numPieces = this.locations.get(i).numberOfPieces(c); // use locations.get() rather than getBoardLocation() because need to access off-board locations
+                thisLine = (isSpecialLocation ? "|" : " ") + "| " + getNOf(" ",maxNumberLength - getLengthOfNumber(numPieces)) + numPieces + " " + c + getNOf(" ",maxColourLength - c.toString().length()) + " |" + (isSpecialLocation ? "|" : " ") + " ";
+                if(firstColour){
+                    thisLine += getNOf(" ",maxNumberLength - getLengthOfNumber(i)) + i + " " + locations.get(i).getName(); // where 1 is the length of the number 0
+                    firstColour = false;
                 }
+                lines.add(thisLine);
             }
-            System.out.println("Max colour length is " + maxColourLength);
 
+        } // End for each location
 
-            // Calculate the biggest number length
-            // Biggest number will be number of pieces per colour
-            // Length will be floor (log_10 (NUMBER_OF_PIECES)) + 1
-            int maxNumberLength = getLengthOfNumber(BoardInterface.PIECES_PER_PLAYER);
-            System.out.println("Max number length is " + maxNumberLength);
-
-            // space + maxNumberLength + space + maxColourLength + space
-            int boxInnerWidth = maxNumberLength + maxColourLength + 3;
-            System.out.println("Inner box width is " + boxInnerWidth);
-
-            String thisLine = "";
-
-            // Print start location
-            thisLine += "  " + getNOf("-",boxInnerWidth);
-            lines.add(thisLine);
-
-
-
-            return output;
-
-        }
-        else
-        {
-
-            /*
-
-            OLD LAYOUT
-
-            [ 1]>[ 2]>[ 3]>[ 4]>[ 5] Asc.  (0)
-            [11]<[10]<[ 9]<[ 8]<[ 7] Desc. (1)
-            [12]>[13]>[14]>[15]>[16] Asc.  (0)
-            [21]<[20]<[19]<[18]<[17] Desc. (1)
-            [22]>[23]>[24]           Asc.  (0)
-
-		*/
-
-            try
-            {
-                double rowsToDraw = Math.ceil(NUMBER_OF_LOCATIONS*1.0 / HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW);
-                System.out.println(rowsToDraw + " rows to draw");
-
-                // Generate entire dashed line
-                String dashLine = "";
-                for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-                {
-                    dashLine += " ";
-                    for(int j=2; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-1; j++)
-                    {
-                        dashLine += "-";
-                    }
-                    dashLine += " ";
-                    if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){ // i.e. not the last item on the row
-                        dashLine += " "; // a single space
-                    }
-                }
-                dashLine += " ";
-
-                for(int h=1; h<=rowsToDraw; h++)
-                {
-
-                    int offset = (int) ((h-1)*HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW); // Generates 0, 10, 20, ... for case 0  |  Generates 5, 15, 25, ... for case 1
-
-                    // System.out.println("CASE (h-1)%2: " + (h-1)%2 + ", h: " + h);// + ", offset: " + offset);
-
-                    switch((h-1)%2)
-                    {
-                        case 0: // case 0 Ascending
-                        {
-                            System.out.println("case0 asc offset:  " + offset);
-                            lines.add(dashLine);
-                            // System.out.println(dashLine);
-
-                            // Draw location name line
-                            String locationNameLine = "";
-                            for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-                            {
-                                locationNameLine += "|" + this.locations.get(offset+i).getName();
-                                for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+i).getName().length()-2; j++)
-                                {
-                                    locationNameLine += " ";
-                                }
-                                locationNameLine += "|";
-                                if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
-                                    locationNameLine += ">";
-                                }
-                            }
-                            lines.add(locationNameLine);
-                            // System.out.println(locationNameLine);
-
-
-                            // Loop through each colour and print the right number of them
-                            for(Colour c : Colour.values())
-                            {
-                                String colourLine = "";
-                                for(int i=1; i<=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i++)
-                                {
-                                    if(!this.locations.get(offset+i).getName().equals("Finish"))
-                                    {
-                                        colourLine += "|";
-                                        colourLine += this.locations.get(offset+i).numberOfPieces(c);
-                                        colourLine += " ";
-                                        colourLine += c;
-                                        for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
-                                            colourLine += " ";
-                                        }
-                                        colourLine += "|";
-                                        if(i != HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW){
-                                            colourLine += ">";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // Leave box blank
-                                    }
-                                }
-                                lines.add(colourLine);
-                                // System.out.println(colourLine);
-                            }
-
-                            // Re-add the full line of dashes
-                            lines.add(dashLine);
-                            // System.out.println(dashLine);
-
-                            // Draw a blank line
-                            lines.add("");
-
-                            break;
-
-
-                        } // case 0 ascending
-
-
-                        case 1: // case 1 Descending
-                        {
-                            System.out.println("case1 desc offset: " + offset);
-                            lines.add(dashLine);
-                            // System.out.println(dashLine);
-
-                            // Draw location name line
-                            String locationNameLine = "";
-                            for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
-                            {
-                                locationNameLine += "|" + this.locations.get(offset+i).getName();
-                                for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-this.locations.get(offset+i).getName().length()-2; j++)
-                                {
-                                    locationNameLine += " ";
-                                }
-                                locationNameLine += "|";
-                                if(i != 1){
-                                    locationNameLine += "<";
-                                }
-                            }
-                            lines.add(locationNameLine);
-                            // System.out.println(locationNameLine);
-
-
-                            // Loop through each colour and print the right number of them
-                            for(Colour c : Colour.values())
-                            {
-                                String colourLine = "";
-                                for(int i=HumanConsolePlayer.CONSOLE_OUTPUT_NUMBER_OF_BOXES_ON_ROW; i>=1; i--)
-                                {
-                                    if(!this.locations.get(offset+i).getName().equals("Finish"))
-                                    {
-                                        colourLine += "|";
-                                        colourLine += this.locations.get(offset+i).numberOfPieces(c);
-                                        colourLine += " ";
-                                        colourLine += c;
-                                        for(int j=1; j<=HumanConsolePlayer.CONSOLE_OUTPUT_WIDTH_OF_BOX-c.toString().length()-3-(""+this.locations.get(offset+i).numberOfPieces(c)).length(); j++){
-                                            colourLine += " ";
-                                        }
-                                        colourLine += "|";
-                                        if(i != 1){
-                                            colourLine += "<";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // Leave box blank
-                                    }
-                                }
-                                lines.add(colourLine);
-                                // System.out.println(colourLine);
-                            }
-
-                            // Re-add the full line of dashes
-                            lines.add(dashLine);
-                            // System.out.println(dashLine);
-
-                            // Draw a blank line
-                            lines.add("");
-
-                            break;
-
-                        } // case 2 descending
-                    } // switch
-                } // for (int h)
-            } // end try
-            catch(Exception e)
-            {
-                // This will never happen
-                return e.toString();
-            } // end catch
-        } // end if -notv
+        lines.add(paddedDashLine);
 
         String output = "";
         for(String line : lines)

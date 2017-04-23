@@ -123,7 +123,7 @@ public interface BoardInterface extends Cloneable{
 /*
 Location names:
 
-        "Start",            //  0
+        "START",            //  0
         "Newcastle",        //  1
         "Gateshead",        //  2
         "Sunderland",       //  3
@@ -148,7 +148,7 @@ Location names:
         "Newton Aycliffe",  // 22
         "Spennymoor",       // 23
         "Durham",           // 24
-        "Finish",           // 25
-        "Stockton"          // 26 (Holding Area)
+        "FINISH",           // 25
+        "KNOCKED"           // 26 (Holding Area)
 		
 */
