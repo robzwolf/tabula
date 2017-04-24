@@ -138,13 +138,8 @@ public class Game implements GameInterface
                             }
                         }
                     }
-                    catch (NotRolledYetException e)
+                    catch (NotRolledYetException | PauseException e)
                     {
-                        System.out.println(e);
-                    }
-                    catch (PauseException e)
-                    {
-                        // Pause
                         System.out.println(e);
                     }
                     stillPlaying = false;
