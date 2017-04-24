@@ -1,7 +1,7 @@
 package xyz.robbie.tabula;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 public class HumanConsolePlayer implements PlayerInterface
 {
+    private static final String[] ordinalNumbers = { "first", "second", "third", "fourth" };
 
     private Scanner scanner;
     private String input;
@@ -25,11 +26,24 @@ public class HumanConsolePlayer implements PlayerInterface
         input = "";
     }
 
+    private String getPrettyNumbersList(List<Integer> diceValues)
+    {
+        String output = "";
+        for (int i=0; i<diceValues.size()-2; i++)
+        {
+            output += diceValues.get(i) + ", ";
+        }
+        if(diceValues.size() >= 2)
+        {
+            output += diceValues.get(diceValues.size()-2) + " and " + diceValues.get(diceValues.size()-1);
+        }
+
+        return output;
+//        return Arrays.toString(diceValues.toArray());
+    }
+
     public TurnInterface getTurn(Colour colour, BoardInterface board, List<Integer> diceValues) throws PauseException
     {
-//        Scanner scanner = new Scanner(System.in);
-//        String input = "";
-
         System.out.println(board);
         System.out.println("Player " + Game.strToTitleCase(colour + ", it's your turn."));
         if(diceValues.size() == 4)
@@ -41,21 +55,36 @@ public class HumanConsolePlayer implements PlayerInterface
             System.out.println("Your dice values are " + diceValues.get(0) + " and " + diceValues.get(1) + ".");
         }
 
+        List<MoveInterface> moves = new ArrayList<MoveInterface>();
+        for(int dieValue : diceValues)
+        {
+            // Ask user for their preferred dice value
+            System.out.println("The dice values available to you are: " + getPrettyNumbersList(diceValues));
+            System.out.println("Enter which die value you wish to use " + ordinalNumbers[moves.size()] + ":"); // when moves is empty, get ordinalNumbers[0] and so on
+            int chosenDie = askUserForNum(diceValues, "%s is not one of the values you rolled. Try again:");
 
-        // ArrayList<Integer> dice = new ArrayList<Integer>();
+            // Ask user for move source location
+            Integer sourceLocation = null;
+            System.out.println("Enter from which location you wish to move a counter " + chosenDie + " space" + (chosenDie == 1 ? "" : "s") + ":");
+            List<Integer> locationNums = new ArrayList<Integer>();
+            for(int i=1; i<BoardInterface.NUMBER_OF_LOCATIONS; i++){
+                locationNums.add(i);
+            }
+            int chosenSourceLocation = askUserForNum(locationNums, "%s is not a valid location. Try again:");
 
-        System.out.println("Enter which die value you wish to use first:");
-        // Ask user for their preferred dice value
-        int firstDie = askUserForNum(diceValues, "%s is not one of the values you rolled. Try again:");
-        Integer sourceLocation = null;
+            MoveInterface calculatedMove = new Move();
+            try
+            {
+                calculatedMove.setDiceValue(chosenDie);
+                calculatedMove.setSourceLocation(chosenSourceLocation);
+            }
+            catch (IllegalMoveException | NoSuchLocationException e)
+            {
+                System.out.println("e = " + e);
+            }
 
-        // Ask user which location they want to move a piece from
-        System.out.println("Enter which location do you want to move a counter " + firstDie + " space" + (firstDie == 1 ? "" : "s") + " from:");
-        List<Integer> locationNums = new ArrayList<Integer>();
-        for(int i=1; i<BoardInterface.NUMBER_OF_LOCATIONS; i++){
-            locationNums.add(i);
+            moves.add(calculatedMove);
         }
-        int firstLocation = askUserForNum(locationNums, "%s is not a valid location. Try again:");
 
         return null;
     }
