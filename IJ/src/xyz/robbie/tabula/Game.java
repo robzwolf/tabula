@@ -117,6 +117,39 @@ public class Game implements GameInterface
                 g.setPlayer(Colour.GREEN, humanConsolePlayerOne);
                 g.setPlayer(Colour.BLUE, humanConsolePlayerTwo);
 
+                boolean stillPlaying = true;
+                TurnInterface t;
+                // Do the game loop
+                do
+                {
+                    d.roll();
+                    try
+                    {
+                        t = humanConsolePlayerOne.getTurn(Colour.GREEN,b,d.getValues());
+                        for(MoveInterface move : t.getMoves())
+                        {
+                            try
+                            {
+                                b.makeMove(Colour.GREEN,move);
+                            }
+                            catch (IllegalMoveException e)
+                            {
+                                System.out.println(e);
+                            }
+                        }
+                    }
+                    catch (NotRolledYetException e)
+                    {
+                        System.out.println(e);
+                    }
+                    catch (PauseException e)
+                    {
+                        // Pause
+                        System.out.println(e);
+                    }
+                    stillPlaying = false;
+                } while(stillPlaying);
+
                 do {
                     System.out.println("Choose from the following options:");
                     System.out.println("(e)xit, print all (l)ocations, print (b)oard, (r)oll dice, print dice (v)alues, (c)lone and print new board");
@@ -198,4 +231,19 @@ public class Game implements GameInterface
             }
         } // end switch
     } // end main()
+
+    public static String strToTitleCase(String str)
+    {
+        if(str.length() == 0)
+        {
+            return "";
+        }
+        String[] strSplit = str.split("");
+        String output = "";
+        output += strSplit[0].toUpperCase();
+        for(int i=1;i<strSplit.length;i++){
+            output += strSplit[i].toLowerCase();
+        }
+        return output;
+    }
 } // end class
