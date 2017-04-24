@@ -404,7 +404,7 @@ public class Board implements BoardInterface
                 int numPieces = this.locations.get(i).numberOfPieces(c); // use locations.get() rather than getBoardLocation() because need to access off-board locations
                 thisLine = (isSpecialLocation ? "|" : " ") + "| " + getNOf(" ",maxNumberLength - getLengthOfNumber(numPieces)) + numPieces + " " + c + getNOf(" ",maxColourLength - c.toString().length()) + " |" + (isSpecialLocation ? "|" : " ") + " ";
                 if(firstColour){
-                    thisLine += getNOf(" ",maxNumberLength - getLengthOfNumber(i)) + i + " " + locations.get(i).getName(); // where 1 is the length of the number 0
+                    thisLine += getNOf(" ",maxNumberLength - getLengthOfNumber(i)) + (isSpecialLocation ? getNOf(" ", getLengthOfNumber(i)) : i) + " " + locations.get(i).getName(); // where 1 is the length of the number 0
                     firstColour = false;
                 }
                 lines.add(thisLine);
