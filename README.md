@@ -1,3 +1,6 @@
+# NOTICE
+This repository has been succeeded by [tabulaIJ_refresh](https://github.com/robzwolf/tabulaIJ_refresh/).
+
 # Tabula
 Tabula is a game that was played by the Romans.
 
